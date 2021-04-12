@@ -1,14 +1,14 @@
 import React,  {Component} from 'react';
 
-class Tracking extends Component {
+class PastWorkHours extends Component {
 
     render() {
         return(
             <div>
-                <p>Tracking</p>
+                <p>Past Work Hours</p>
             </div>
         );
     }
 }
 
-export default Tracking;
+export default PastWorkHours;
