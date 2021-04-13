@@ -1,8 +1,8 @@
+import WorkHoursInput from '../components/workhours/WorkHoursInput/WorkHoursInput';
+
 const NewWorkHours = () => {
     return (
-        <div>
-            <p>New Work Hours</p>
-        </div>
+        <WorkHoursInput />
     );
 };
 

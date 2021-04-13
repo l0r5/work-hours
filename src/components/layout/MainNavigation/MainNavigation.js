@@ -1,20 +1,20 @@
 import {NavLink} from 'react-router-dom';
 
-import classes from './MainNavigation.module.css';
+import styles from './MainNavigation.module.css';
 
 const MainNavigation = () => {
     return (
-        <header className={classes.header}>
-            <div className={classes.logo}>LOGO</div>
-            <nav className={classes.nav}>
+        <header className={styles.header}>
+            <div className={styles.logo}>LOGO</div>
+            <nav className={styles.nav}>
                 <ul>
                     <li>
-                        <NavLink to='/' activeClassName={classes.active}>
+                        <NavLink to='/' activeClassName={styles.active}>
                             Übersicht
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to='/erfassen' activeClassName={classes.active}>
+                        <NavLink to='/erfassen' activeClassName={styles.active}>
                             Erfassen
                         </NavLink>
                     </li>
