@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from 'react';
 import './WorkHoursInput.css';
 
 const WorkHoursInput = (props) => {
-
     const customerInputRef = useRef();
     const [enteredCustomer, setEnteredCustomer] = useState('');
     const [enteredCustomerIsValid, setEnteredCustomerIsValid] = useState(false);
@@ -17,6 +16,15 @@ const WorkHoursInput = (props) => {
     const customerInputChangeHandler = event => {
         setEnteredCustomer(event.target.value);
     };
+
+    const customerInputBlurHandler = event => {
+        setEnteredCustomerTouched(true);
+
+        if(enteredCustomer.trim() === '') {
+            setEnteredCustomerIsValid(false);
+            return;
+        }
+    }
 
     const formSubmissionHandler = event => {
         event.preventDefault();
@@ -46,7 +54,12 @@ const WorkHoursInput = (props) => {
             </div>
             <div className={customerInputClasses}>
                 <label htmlFor='customer'>Customer</label>
-                <input ref={customerInputRef} type='text' id='customer' onChange={customerInputChangeHandler} value={enteredCustomer}/>
+                <input ref={customerInputRef}
+                       type='text'
+                       id='customer'
+                       onChange={customerInputChangeHandler}
+                       onBlur={customerInputBlurHandler}
+                       value={enteredCustomer}/>
             </div>
             {customerInputIsInvalid && <p className="error-text">Customer must not be empty!</p>}
             <div className="form-control">
