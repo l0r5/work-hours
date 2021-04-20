@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import './WorkHoursInput.css';
 
 const WorkHoursInput = (props) => {
@@ -6,6 +6,13 @@ const WorkHoursInput = (props) => {
     const customerInputRef = useRef();
     const [enteredCustomer, setEnteredCustomer] = useState('');
     const [enteredCustomerIsValid, setEnteredCustomerIsValid] = useState(false);
+    const [enteredCustomerTouched, setEnteredCustomerTouched] = useState(false);
+
+    useEffect(()=>{
+        if(enteredCustomerIsValid) {
+            console.log('Customer is valid!');
+        }
+    },[enteredCustomerIsValid]);
 
     const customerInputChangeHandler = event => {
         setEnteredCustomer(event.target.value);
@@ -13,6 +20,8 @@ const WorkHoursInput = (props) => {
 
     const formSubmissionHandler = event => {
         event.preventDefault();
+
+        setEnteredCustomerTouched(true);
 
         if(enteredCustomer.trim() === '') {
             setEnteredCustomerIsValid(false);
@@ -25,17 +34,21 @@ const WorkHoursInput = (props) => {
         setEnteredCustomer('');
     };
 
+    const customerInputIsInvalid = !enteredCustomerIsValid && enteredCustomerTouched;
+
+    const customerInputClasses = customerInputIsInvalid ? 'form-control invalid' : 'form-control';
+
     return (
         <form onSubmit={formSubmissionHandler}>
             <div className="form-control">
                 <label htmlFor='date'>Date</label>
                 <input type='date' id='date'/>
             </div>
-            <div className="form-control">
+            <div className={customerInputClasses}>
                 <label htmlFor='customer'>Customer</label>
                 <input ref={customerInputRef} type='text' id='customer' onChange={customerInputChangeHandler} value={enteredCustomer}/>
             </div>
-            {!enteredCustomerIsValid && <p className="error-text">Customer must not be empty!</p>}
+            {customerInputIsInvalid && <p className="error-text">Customer must not be empty!</p>}
             <div className="form-control">
                 <label htmlFor='text'>Location</label>
                 <input type='text' id='location'/>
