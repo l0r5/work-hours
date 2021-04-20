@@ -1,42 +1,52 @@
-import {useState} from 'react';
 import './WorkHoursInput.css';
 
-const WorkHoursInput = (props) => {
-    const [enteredCustomer, setEnteredCustomer] = useState('');
-    const [enteredCustomerTouched, setEnteredCustomerTouched] = useState(false);
+import useInput from '../../../hooks/use-input';
 
-    const enteredCustomerIsValid = enteredCustomer.trim() !== '';
-    const customerInputIsInvalid = !enteredCustomerIsValid && enteredCustomerTouched;
+const WorkHoursInput = (props) => {
+    const {
+        value: enteredCustomer,
+        isValid: enteredCustomerIsValid,
+        hasError: customerInputHasError,
+        valueChangedHandler: customerChangedHandler,
+        inputBlurHandler: customerBlurHandler,
+        reset: resetCustomerInput
+    } = useInput(value => value.trim() !== '');
+
+    const {
+        value: enteredLocation,
+        isValid: enteredLocationIsValid,
+        hasError: locationInputHasError,
+        valueChangedHandler: locationChangedHandler,
+        inputBlurHandler: locationBlurHandler,
+        reset: resetLocationInput
+    } = useInput(value => value.trim() !== '');
 
     let formIsValid = false;
 
-    if (enteredCustomerIsValid) {
+    if (enteredCustomerIsValid && enteredLocationIsValid) {
         formIsValid = true;
-    }
-
-    const customerInputChangeHandler = event => {
-        setEnteredCustomer(event.target.value);
-    };
-
-    const customerInputBlurHandler = event => {
-        setEnteredCustomerTouched(true);
     }
 
     const formSubmissionHandler = event => {
         event.preventDefault();
 
-        setEnteredCustomerTouched(true);
-
-        if (!enteredCustomerIsValid) {
+        if (!enteredCustomerIsValid || !enteredLocationIsValid) {
             return;
         }
 
         console.log(enteredCustomer);
-        setEnteredCustomer('');
-        setEnteredCustomerTouched(false);
-    };
-    const customerInputClasses = customerInputIsInvalid ? 'form-control invalid' : 'form-control';
+        console.log(enteredLocation);
 
+        resetCustomerInput();
+        resetLocationInput();
+    };
+    const customerInputClasses = customerInputHasError
+        ? 'form-control invalid'
+        : 'form-control';
+
+    const locationInputClasses = customerInputHasError
+        ? 'form-control invalid'
+        : 'form-control';
     return (
         <form onSubmit={formSubmissionHandler}>
             <div className="form-control">
@@ -47,14 +57,19 @@ const WorkHoursInput = (props) => {
                 <label htmlFor='customer'>Customer</label>
                 <input type='text'
                        id='customer'
-                       onChange={customerInputChangeHandler}
-                       onBlur={customerInputBlurHandler}
+                       onChange={customerChangedHandler}
+                       onBlur={customerBlurHandler}
                        value={enteredCustomer}/>
             </div>
-            {customerInputIsInvalid && <p className="error-text">Customer must not be empty!</p>}
-            <div className="form-control">
+            {customerInputHasError && <p className="error-text">Customer must not be empty!</p>}
+            <div className={locationInputClasses}>
                 <label htmlFor='text'>Location</label>
-                <input type='text' id='location'/>
+                <input type='text'
+                       id='location'
+                       onChange={locationChangedHandler}
+                       onBlur={locationBlurHandler}
+                       value={enteredLocation}/>
+                {locationInputHasError && <p className="error-text">Location must not be empty!</p>}
             </div>
             <div className="form-control">
                 <label htmlFor='text'>Token</label>
