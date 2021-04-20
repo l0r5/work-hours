@@ -2,6 +2,8 @@ import './WorkHoursInput.css';
 
 import useInput from '../../../hooks/use-input';
 
+const isNotEmpty = value => value.trim() !== '';
+
 const WorkHoursInput = (props) => {
     const {
         value: enteredCustomer,
@@ -10,7 +12,7 @@ const WorkHoursInput = (props) => {
         valueChangedHandler: customerChangedHandler,
         inputBlurHandler: customerBlurHandler,
         reset: resetCustomerInput
-    } = useInput(value => value.trim() !== '');
+    } = useInput(isNotEmpty);
 
     const {
         value: enteredLocation,
@@ -19,26 +21,53 @@ const WorkHoursInput = (props) => {
         valueChangedHandler: locationChangedHandler,
         inputBlurHandler: locationBlurHandler,
         reset: resetLocationInput
-    } = useInput(value => value.trim() !== '');
+    } = useInput(isNotEmpty);
+
+    const {
+        value: enteredToken,
+        isValid: enteredTokenIsValid,
+        hasError: tokenInputHasError,
+        valueChangedHandler: tokenChangedHandler,
+        inputBlurHandler: tokenBlurHandler,
+        reset: resetTokenInput
+    } = useInput(isNotEmpty);
+
+    const {
+        value: enteredTask,
+        isValid: enteredTaskIsValid,
+        hasError: taskInputHasError,
+        valueChangedHandler: taskChangedHandler,
+        inputBlurHandler: taskBlurHandler,
+        reset: resetTaskInput
+    } = useInput(isNotEmpty);
 
     let formIsValid = false;
 
-    if (enteredCustomerIsValid && enteredLocationIsValid) {
+    if (enteredCustomerIsValid && enteredLocationIsValid && enteredTokenIsValid && enteredTaskIsValid) {
         formIsValid = true;
     }
 
     const formSubmissionHandler = event => {
         event.preventDefault();
 
-        if (!enteredCustomerIsValid || !enteredLocationIsValid) {
+        if(!formIsValid) {
             return;
         }
 
+        if (!enteredCustomerIsValid || !enteredLocationIsValid || !enteredTokenIsValid || !enteredTaskIsValid) {
+            return;
+        }
+
+        console.log('Submitted');
         console.log(enteredCustomer);
         console.log(enteredLocation);
+        console.log(enteredToken);
+        console.log(enteredTask);
 
         resetCustomerInput();
         resetLocationInput();
+        resetTokenInput();
+        resetTaskInput();
     };
     const customerInputClasses = customerInputHasError
         ? 'form-control invalid'
@@ -71,13 +100,24 @@ const WorkHoursInput = (props) => {
                        value={enteredLocation}/>
                 {locationInputHasError && <p className="error-text">Location must not be empty!</p>}
             </div>
-            <div className="form-control">
+            <div className={locationInputClasses}>
                 <label htmlFor='text'>Token</label>
-                <input type='text' id='token'/>
+                <input
+                    type='text'
+                    id='token'
+                    onChange={tokenChangedHandler}
+                    onBlur={tokenBlurHandler}
+                    value={enteredToken}/>
+                {tokenInputHasError && <p className="error-text">Token must not be empty!</p>}
             </div>
-            <div className="form-control">
+            <div className={locationInputClasses}>
                 <label htmlFor='text'>Task</label>
-                <input type='text' id='task'/>
+                <input type='text'
+                       id='task'
+                       onChange={taskChangedHandler}
+                       onBlur={taskBlurHandler}
+                       value={enteredTask}/>
+                {taskInputHasError && <p className="error-text">Task must not be empty!</p>}
             </div>
             <div className="form-control">
                 <label htmlFor='text'>Comment</label>
