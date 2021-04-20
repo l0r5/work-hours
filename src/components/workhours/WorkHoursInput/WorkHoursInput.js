@@ -15,6 +15,10 @@ const WorkHoursInput = (props) => {
 
     const customerInputChangeHandler = event => {
         setEnteredCustomer(event.target.value);
+
+        if(event.target.value.trim() !== '') {
+            setEnteredCustomerIsValid(true);
+        }
     };
 
     const customerInputBlurHandler = event => {
@@ -22,7 +26,6 @@ const WorkHoursInput = (props) => {
 
         if(enteredCustomer.trim() === '') {
             setEnteredCustomerIsValid(false);
-            return;
         }
     }
 
