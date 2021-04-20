@@ -1,14 +1,24 @@
-import Layout from './hoc/Layout/Layout';
-
-import Tracking from './containers/Tracking/Tracking';
+import {Route, Switch} from 'react-router-dom';
+import NotFound from './pages/NotFound';
+import AllWorkHours from './pages/AllWorkHours';
+import NewWorkHours from './pages/NewWorkHours';
+import Layout from './components/layout/Layout';
 
 function App() {
     return (
-        <div>
-            <Layout>
-                <Tracking />
-            </Layout>
-        </div>
+        <Layout>
+            <Switch>
+                <Route path='/' exact>
+                    <AllWorkHours/>
+                </Route>
+                <Route path='/erfassen' exact>
+                    <NewWorkHours/>
+                </Route>
+                <Route path='*'>
+                    <NotFound/>
+                </Route>
+            </Switch>
+        </Layout>
     );
 }
 
