@@ -1,32 +1,19 @@
-import {useEffect, useRef, useState} from 'react';
+import {useState} from 'react';
 import './WorkHoursInput.css';
 
 const WorkHoursInput = (props) => {
-    const customerInputRef = useRef();
     const [enteredCustomer, setEnteredCustomer] = useState('');
-    const [enteredCustomerIsValid, setEnteredCustomerIsValid] = useState(false);
     const [enteredCustomerTouched, setEnteredCustomerTouched] = useState(false);
 
-    useEffect(()=>{
-        if(enteredCustomerIsValid) {
-            console.log('Customer is valid!');
-        }
-    },[enteredCustomerIsValid]);
+    const enteredCustomerIsValid = enteredCustomer.trim() !== '';
+    const customerInputIsInvalid = !enteredCustomerIsValid && enteredCustomerTouched;
 
     const customerInputChangeHandler = event => {
         setEnteredCustomer(event.target.value);
-
-        if(event.target.value.trim() !== '') {
-            setEnteredCustomerIsValid(true);
-        }
     };
 
     const customerInputBlurHandler = event => {
         setEnteredCustomerTouched(true);
-
-        if(enteredCustomer.trim() === '') {
-            setEnteredCustomerIsValid(false);
-        }
     }
 
     const formSubmissionHandler = event => {
@@ -34,19 +21,14 @@ const WorkHoursInput = (props) => {
 
         setEnteredCustomerTouched(true);
 
-        if(enteredCustomer.trim() === '') {
-            setEnteredCustomerIsValid(false);
+        if(!enteredCustomerIsValid) {
             return;
         }
 
-        setEnteredCustomerIsValid(true);
-
         console.log(enteredCustomer);
         setEnteredCustomer('');
+        setEnteredCustomerTouched(false);
     };
-
-    const customerInputIsInvalid = !enteredCustomerIsValid && enteredCustomerTouched;
-
     const customerInputClasses = customerInputIsInvalid ? 'form-control invalid' : 'form-control';
 
     return (
@@ -57,8 +39,7 @@ const WorkHoursInput = (props) => {
             </div>
             <div className={customerInputClasses}>
                 <label htmlFor='customer'>Customer</label>
-                <input ref={customerInputRef}
-                       type='text'
+                <input type='text'
                        id='customer'
                        onChange={customerInputChangeHandler}
                        onBlur={customerInputBlurHandler}
