@@ -8,6 +8,12 @@ const WorkHoursInput = (props) => {
     const enteredCustomerIsValid = enteredCustomer.trim() !== '';
     const customerInputIsInvalid = !enteredCustomerIsValid && enteredCustomerTouched;
 
+    let formIsValid = false;
+
+    if (enteredCustomerIsValid) {
+        formIsValid = true;
+    }
+
     const customerInputChangeHandler = event => {
         setEnteredCustomer(event.target.value);
     };
@@ -21,7 +27,7 @@ const WorkHoursInput = (props) => {
 
         setEnteredCustomerTouched(true);
 
-        if(!enteredCustomerIsValid) {
+        if (!enteredCustomerIsValid) {
             return;
         }
 
@@ -79,7 +85,7 @@ const WorkHoursInput = (props) => {
                 <input type='number' id='hoursMachine'/>
             </div>
             <div className="form-control">
-                <button>Submit</button>
+                <button disabled={!formIsValid}>Submit</button>
             </div>
         </form>
     );
