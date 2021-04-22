@@ -1,9 +1,9 @@
 import {useState} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import NotFound from './pages/NotFound';
-import AllWorkHours from './pages/AllWorkHours';
-import NewWorkHours from './pages/NewWorkHours';
+import NotFound from './pages/NotFound/NotFound';
+import AllWorkHours from './pages/AllWorkHours/AllWorkHours';
+import NewWorkHours from './pages/NewWorkHours/NewWorkHours';
 import Layout from './components/Layout/Layout';
 
 function App() {
