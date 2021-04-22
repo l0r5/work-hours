@@ -1,6 +1,6 @@
 import './WorkHoursInput.css';
 
-import useInput from '../../../hooks/use-input';
+import useInput from '../../hooks/use-input';
 
 const isNotEmpty = value => value.trim() !== '';
 
@@ -31,6 +31,13 @@ const WorkHoursInput = (props) => {
         inputBlurHandler: locationBlurHandler,
         reset: resetLocationInput
     } = useInput(isNotEmpty);
+
+    const {
+        value: enteredComment,
+        valueChangedHandler: commentChangedHandler,
+        inputBlurHandler: commentBlurHandler,
+        reset: resetCommentInput
+    } = useInput(() => true);
 
     const {
         value: enteredToken,
@@ -100,7 +107,7 @@ const WorkHoursInput = (props) => {
         formIsValid = true;
     }
 
-    const formSubmissionHandler = event => {
+    const formSubmissionHandler = async (event) => {
         event.preventDefault();
 
         if (!formIsValid) {
@@ -119,16 +126,26 @@ const WorkHoursInput = (props) => {
             return;
         }
 
-        console.log('Submitted');
-        console.log(enteredDate);
-        console.log(enteredCustomer);
-        console.log(enteredLocation);
-        console.log(enteredToken);
-        console.log(enteredTask);
+        await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json', {
+            method: 'POST',
+            body: JSON.stringify({
+                date: enteredDate,
+                customer: enteredCustomer,
+                location: enteredLocation,
+                token: enteredToken,
+                task: enteredTask,
+                comment: enteredComment,
+                employee: enteredEmployee,
+                workHours: enteredWorkHours,
+                chainsawHours: enteredChainsawHours,
+                machineHours: enteredMachineHours
+            })
+        });
 
         resetDateInput();
         resetCustomerInput();
         resetLocationInput();
+        resetCommentInput();
         resetTokenInput();
         resetTaskInput();
         resetEmployeeInput();
@@ -223,7 +240,11 @@ const WorkHoursInput = (props) => {
             </div>
             <div className="form-control">
                 <label htmlFor='text'>Comment</label>
-                <input type='text' id='comment'/>
+                <input type='text'
+                       id='comment'
+                       onChange={commentChangedHandler}
+                       onBlur={commentBlurHandler}
+                       value={enteredComment}/>
             </div>
             <div className={employeeInputClasses}>
                 <label htmlFor='text'>Employee</label>
@@ -241,7 +262,8 @@ const WorkHoursInput = (props) => {
                        onChange={workHoursChangedHandler}
                        onBlur={workHoursBlurHandler}
                        value={enteredWorkHours}/>
-                {workHoursInputHasError && <p className="error-text">WorkHours must not be empty!</p>}
+                {workHoursInputHasError &&
+                <p className="error-text">WorkHours must not be empty!</p>}
             </div>
             <div className={chainsawHoursInputClasses}>
                 <label htmlFor='text'>Chainsaw Hours</label>
@@ -250,7 +272,8 @@ const WorkHoursInput = (props) => {
                        onChange={chainsawHoursChangedHandler}
                        onBlur={chainsawHoursBlurHandler}
                        value={enteredChainsawHours}/>
-                {chainsawHoursInputHasError && <p className="error-text">ChainsawHours must not be empty!</p>}
+                {chainsawHoursInputHasError &&
+                <p className="error-text">ChainsawHours must not be empty!</p>}
             </div>
             <div className={machineHoursInputClasses}>
                 <label htmlFor='text'>Machine Hours</label>
@@ -259,7 +282,8 @@ const WorkHoursInput = (props) => {
                        onChange={machineHoursChangedHandler}
                        onBlur={machineHoursBlurHandler}
                        value={enteredMachineHours}/>
-                {machineHoursInputHasError && <p className="error-text">MachineHours must not be empty!</p>}
+                {machineHoursInputHasError &&
+                <p className="error-text">MachineHours must not be empty!</p>}
             </div>
             <div className="form-control">
                 <button disabled={!formIsValid}>Submit</button>
