@@ -1,6 +1,7 @@
 import classes from './WorkHoursInput.module.css';
 
 import useInput from '../../hooks/use-input';
+import Button from '../UI/Button/Button';
 
 const isNotEmpty = value => value.trim() !== '';
 
@@ -264,7 +265,7 @@ const WorkHoursInput = (props) => {
                 <p className={classes.errorText}>MachineHours must not be empty!</p>}
             </div>
             <div className="form-control">
-                <button disabled={!formIsValid}>Submit</button>
+                <Button disabled={!formIsValid}>Submit</Button>
             </div>
         </form>
     );
