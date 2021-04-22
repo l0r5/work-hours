@@ -1,10 +1,22 @@
-import {Fragment} from 'react';
+import {Fragment, useState} from 'react';
 
 import classes from './Layout.module.css';
-import MainNavigation from './MainNavigation/MainNavigation';
+import Toolbar from './Navigation/Toolbar/Toolbar';
 import Login from '../Login/Login';
+import SideDrawer from './Navigation/SideDrawer/SideDrawer';
 
 const Layout = (props) => {
+
+    const[showSideDrawer, setShowSideDrawer] = useState(false);
+
+    const sideDrawerCloseHandler = () => {
+        setShowSideDrawer(false);
+    }
+
+    const sideDrawerToggleHandler = () => {
+        setShowSideDrawer(!showSideDrawer);
+    }
+
         return (
             <Fragment>
                 {!props.isLoggedIn &&
@@ -14,7 +26,12 @@ const Layout = (props) => {
                 }
                 {props.isLoggedIn &&
                 <Fragment>
-                    <MainNavigation onLogout={props.onLogout}/>
+                    <Toolbar
+                        drawerToggleClicked={sideDrawerToggleHandler}
+                        onLogout={props.onLogout}/>
+                    <SideDrawer
+                        open={showSideDrawer}
+                        closed={sideDrawerCloseHandler}/>
                     <main className={classes.main}>{props.children}</main>
                 </Fragment>
                 }
