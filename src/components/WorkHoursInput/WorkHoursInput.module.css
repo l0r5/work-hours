@@ -1,19 +1,19 @@
-.form-control {
+.formControl {
     margin-bottom: 1rem;
 }
 
-.form-control input,
-.form-control label {
+.formControl input,
+.formControl label {
     display: block;
 }
 
-.form-control label {
+.formControl label {
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
 
-.form-control input,
-.form-control select {
+.formControl input,
+.formControl select {
     font: inherit;
     padding: 0.5rem;
     border-radius: 4px;
@@ -22,7 +22,7 @@
     max-width: 100%;
 }
 
-.form-control input:focus {
+.formControl input:focus {
     outline: none;
     border-color: #240370;
     background-color: #e0d4fd;
@@ -64,11 +64,11 @@ button:disabled:active {
     cursor: not-allowed;
 }
 
-.form-actions {
+.formActions {
     text-align: right;
 }
 
-.form-actions button {
+.formActions button {
     margin-left: 1rem;
 }
 
@@ -82,6 +82,6 @@ button:disabled:active {
     background-color: #fbe8d2;
 }
 
-.error-text {
+.errorText {
     color: #b40e0e;
 }

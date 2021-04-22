@@ -1,4 +1,4 @@
-import './WorkHoursInput.css';
+import classes from './WorkHoursInput.module.css';
 
 import useInput from '../../hooks/use-input';
 
@@ -34,6 +34,8 @@ const WorkHoursInput = (props) => {
 
     const {
         value: enteredComment,
+        isValid: enteredCommentIsValid,
+        hasError: commentInputHasError,
         valueChangedHandler: commentChangedHandler,
         inputBlurHandler: commentBlurHandler,
         reset: resetCommentInput
@@ -100,6 +102,7 @@ const WorkHoursInput = (props) => {
         && enteredLocationIsValid
         && enteredTokenIsValid
         && enteredTaskIsValid
+        && enteredCommentIsValid
         && enteredEmployeeIsValid
         && enteredWorkHoursIsValid
         && enteredChainsawHoursIsValid
@@ -119,6 +122,7 @@ const WorkHoursInput = (props) => {
             || !enteredLocationIsValid
             || !enteredTokenIsValid
             || !enteredTaskIsValid
+            || !enteredCommentIsValid
             || !enteredEmployeeIsValid
             || !enteredWorkHoursIsValid
             || !enteredChainsawHoursIsValid
@@ -154,45 +158,15 @@ const WorkHoursInput = (props) => {
         resetMachineHoursInput();
     };
 
-    const dateInputClasses = dateInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const customerInputClasses = customerInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const locationInputClasses = locationInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const tokenInputClasses = tokenInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const taskInputClasses = taskInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const employeeInputClasses = employeeInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const workHoursInputClasses = workHoursInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const chainsawHoursInputClasses = chainsawHoursInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
-
-    const machineHoursInputClasses = machineHoursInputHasError
-        ? 'form-control invalid'
-        : 'form-control';
+    const getFormControlClasses = (hasError) => {
+        return hasError
+            ? [classes.formControl, classes.invalid].join(' ')
+            : classes.formControl.toString();
+    };
 
     return (
         <form onSubmit={formSubmissionHandler}>
-            <div className={dateInputClasses}>
+            <div className={getFormControlClasses(dateInputHasError)}>
                 <label htmlFor='date'>Date</label>
                 <input type='date'
                        id='date'
@@ -200,8 +174,8 @@ const WorkHoursInput = (props) => {
                        onBlur={dateBlurHandler}
                        value={enteredDate}/>
             </div>
-            {dateInputHasError && <p className="error-text">Date must not be empty!</p>}
-            <div className={customerInputClasses}>
+            {dateInputHasError && <p className={classes.errorText}>Date must not be empty!</p>}
+            <div className={getFormControlClasses(customerInputHasError)}>
                 <label htmlFor='customer'>Customer</label>
                 <input type='text'
                        id='customer'
@@ -209,17 +183,19 @@ const WorkHoursInput = (props) => {
                        onBlur={customerBlurHandler}
                        value={enteredCustomer}/>
             </div>
-            {customerInputHasError && <p className="error-text">Customer must not be empty!</p>}
-            <div className={locationInputClasses}>
+            {customerInputHasError &&
+            <p className={classes.errorText}>Customer must not be empty!</p>}
+            <div className={getFormControlClasses(locationInputHasError)}>
                 <label htmlFor='text'>Location</label>
                 <input type='text'
                        id='location'
                        onChange={locationChangedHandler}
                        onBlur={locationBlurHandler}
                        value={enteredLocation}/>
-                {locationInputHasError && <p className="error-text">Location must not be empty!</p>}
+                {locationInputHasError &&
+                <p className={classes.errorText}>Location must not be empty!</p>}
             </div>
-            <div className={tokenInputClasses}>
+            <div className={getFormControlClasses(tokenInputHasError)}>
                 <label htmlFor='text'>Token</label>
                 <input
                     type='text'
@@ -227,18 +203,19 @@ const WorkHoursInput = (props) => {
                     onChange={tokenChangedHandler}
                     onBlur={tokenBlurHandler}
                     value={enteredToken}/>
-                {tokenInputHasError && <p className="error-text">Token must not be empty!</p>}
+                {tokenInputHasError &&
+                <p className={classes.errorText}>Token must not be empty!</p>}
             </div>
-            <div className={taskInputClasses}>
+            <div className={getFormControlClasses(taskInputHasError)}>
                 <label htmlFor='text'>Task</label>
                 <input type='text'
                        id='task'
                        onChange={taskChangedHandler}
                        onBlur={taskBlurHandler}
                        value={enteredTask}/>
-                {taskInputHasError && <p className="error-text">Task must not be empty!</p>}
+                {taskInputHasError && <p className={classes.errorText}>Task must not be empty!</p>}
             </div>
-            <div className="form-control">
+            <div className={getFormControlClasses(commentInputHasError)}>
                 <label htmlFor='text'>Comment</label>
                 <input type='text'
                        id='comment'
@@ -246,16 +223,17 @@ const WorkHoursInput = (props) => {
                        onBlur={commentBlurHandler}
                        value={enteredComment}/>
             </div>
-            <div className={employeeInputClasses}>
+            <div className={getFormControlClasses(employeeInputHasError)}>
                 <label htmlFor='text'>Employee</label>
                 <input type='text'
                        id='employee'
                        onChange={employeeChangedHandler}
                        onBlur={employeeBlurHandler}
                        value={enteredEmployee}/>
-                {employeeInputHasError && <p className="error-text">Employee must not be empty!</p>}
+                {employeeInputHasError &&
+                <p className={classes.errorText}>Employee must not be empty!</p>}
             </div>
-            <div className={workHoursInputClasses}>
+            <div className={getFormControlClasses(workHoursInputHasError)}>
                 <label htmlFor='text'>Work Hours</label>
                 <input type='number'
                        id='workHours'
@@ -263,9 +241,9 @@ const WorkHoursInput = (props) => {
                        onBlur={workHoursBlurHandler}
                        value={enteredWorkHours}/>
                 {workHoursInputHasError &&
-                <p className="error-text">WorkHours must not be empty!</p>}
+                <p className={classes.errorText}>WorkHours must not be empty!</p>}
             </div>
-            <div className={chainsawHoursInputClasses}>
+            <div className={getFormControlClasses(chainsawHoursInputHasError)}>
                 <label htmlFor='text'>Chainsaw Hours</label>
                 <input type='number'
                        id='chainsawHours'
@@ -273,9 +251,9 @@ const WorkHoursInput = (props) => {
                        onBlur={chainsawHoursBlurHandler}
                        value={enteredChainsawHours}/>
                 {chainsawHoursInputHasError &&
-                <p className="error-text">ChainsawHours must not be empty!</p>}
+                <p className={classes.errorText}>ChainsawHours must not be empty!</p>}
             </div>
-            <div className={machineHoursInputClasses}>
+            <div className={getFormControlClasses(machineHoursInputHasError)}>
                 <label htmlFor='text'>Machine Hours</label>
                 <input type='number'
                        id='machineHours'
@@ -283,7 +261,7 @@ const WorkHoursInput = (props) => {
                        onBlur={machineHoursBlurHandler}
                        value={enteredMachineHours}/>
                 {machineHoursInputHasError &&
-                <p className="error-text">MachineHours must not be empty!</p>}
+                <p className={classes.errorText}>MachineHours must not be empty!</p>}
             </div>
             <div className="form-control">
                 <button disabled={!formIsValid}>Submit</button>
