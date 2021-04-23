@@ -1,0 +1,9 @@
+.main {
+    margin: 72px auto;
+    width: 70%;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(241 243 244 0.5);
+    border: 1px solid #e8eaed;
+}
