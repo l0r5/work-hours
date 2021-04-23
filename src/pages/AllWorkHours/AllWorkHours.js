@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import Button from '../../components/UI/Button/Button';
@@ -6,51 +7,48 @@ import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList
 
 const AllWorkHours = () => {
 
+    const [workHours, setWorkHours] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        const fetchWorkHours = async () => {
+            const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json').then();
+            const responseData = await response.json();
 
-    const DUMMY_DATA = [
-        {   id: 1,
-            date: new Date(2021, 5, 12),
-            customer: 'Kunde 1',
-            location: 'Nellingen',
-            token: 'TA',
-            task: 'Aufgabe1',
-            comment: 'Kommentar',
-            employee: 'Tino Allgöwer',
-            workHours: 7,
-            chainsawHours: 2,
-            machineHours: 3,
-        },
-        {   id: 2,
-            date: new Date(2021, 5, 12),
-            customer: 'Kunde 2',
-            location: 'Nellingen',
-            token: 'TA',
-            task: 'Aufgabe2',
-            comment: 'Kommentar',
-            employee: 'Tino Allgöwer',
-            workHours: 2,
-            chainsawHours: 2,
-            machineHours: 3,
-        },
-        {   id: 3,
-            date: new Date(2021, 5, 12),
-            customer: 'Kunde 1',
-            location: 'Nellingen',
-            token: 'TA',
-            task: 'Aufgabe3',
-            comment: 'Kommentar',
-            employee: 'Tino Allgöwer',
-            workHours: 5,
-            chainsawHours: 2,
-            machineHours: 3,
-        }
-    ];
+            const loadedWorkHours = [];
 
+            for (const key in responseData) {
+                loadedWorkHours.push({
+                    id: key,
+                    date: responseData[key].date,
+                    customer: responseData[key].customer,
+                    location: responseData[key].location,
+                    token: responseData[key].token,
+                    task: responseData[key].task,
+                    comment: responseData[key].comment,
+                    employee: responseData[key].employee,
+                    workHours: responseData[key].workHours,
+                    chainsawHours: responseData[key].chainsawHours,
+                    machineHours: responseData[key].machineHours
+                });
+            }
+            setWorkHours(loadedWorkHours);
+            setIsLoading(false);
+            console.log("Fetched Work Hours from Database.")
+        };
+        fetchWorkHours();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <section className={classes.WorkHoursLoading}>
+            <p>Loading...</p>
+        </section>);
+    }
 
     return (
         <div className={classes.AllWorkHours}>
             <Link to='/erfassen'><Button>Erfassen</Button></Link>
-            <AllWorkHoursList items={DUMMY_DATA}/>
+            <AllWorkHoursList items={workHours}/>
         </div>
     );
 };

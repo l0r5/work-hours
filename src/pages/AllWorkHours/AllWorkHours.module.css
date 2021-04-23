@@ -1,3 +1,7 @@
 .AllWorkHours a {
     text-decoration: none;
 }
+
+.WorkHoursLoading {
+    text-align: center;
+}
