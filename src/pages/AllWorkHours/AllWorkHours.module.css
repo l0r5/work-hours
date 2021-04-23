@@ -4,4 +4,8 @@
 
 .WorkHoursLoading {
     text-align: center;
+
+}.WorkHoursError {
+    text-align: center;
+    color: red;
 }

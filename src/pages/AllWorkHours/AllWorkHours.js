@@ -6,16 +6,20 @@ import classes from './AllWorkHours.module.css';
 import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList';
 
 const AllWorkHours = () => {
-
     const [workHours, setWorkHours] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [httpError, setHttpError] = useState();
+
     useEffect(() => {
         const fetchWorkHours = async () => {
-            const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json').then();
+            const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json');
+
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
             const responseData = await response.json();
-
             const loadedWorkHours = [];
-
             for (const key in responseData) {
                 loadedWorkHours.push({
                     id: key,
@@ -35,14 +39,24 @@ const AllWorkHours = () => {
             setIsLoading(false);
             console.log("Fetched Work Hours from Database.")
         };
-        fetchWorkHours();
+        fetchWorkHours().catch(error => {
+            setIsLoading(false);
+            setHttpError(error.message)
+        });
     }, []);
 
     if (isLoading) {
         return (
             <section className={classes.WorkHoursLoading}>
-            <p>Loading...</p>
-        </section>);
+                <p>Loading...</p>
+            </section>);
+    }
+
+    if (httpError) {
+        return (
+            <section className={classes.WorkHoursError}>
+                <p>{httpError}</p>
+            </section>);
     }
 
     return (
