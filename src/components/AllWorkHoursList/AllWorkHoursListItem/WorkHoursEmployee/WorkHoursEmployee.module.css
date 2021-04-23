@@ -1,0 +1,15 @@
+.WorkHoursEmployee {
+    display: flex;
+    width: 10rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.WorkHoursEmployee__icon {
+    color: #5e6267;
+}
+
+.WorkHoursEmployee__employee{
+    font-size: 0.85rem;
+    font-weight: bold;
+}

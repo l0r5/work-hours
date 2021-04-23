@@ -1,20 +1,20 @@
 import Card from '../../UI/Card/Card';
 import classes from './AllWorkHoursListItem.module.css';
+import WorkHoursDate from './WorkHoursDate/WorkHoursDate';
+import WorkHoursLocation from './WorkHoursLocation/WorkHoursLocation';
+import WorkHoursEmployee from './WorkHoursEmployee/WorkHoursEmployee';
 
 const AllWorkHoursListItem = (props) => {
-    console.log(props)
-
-    if (props.length === 0) {
-        return <h2 className='expenses-list__fallback'>Found no expenses.</h2>;
-    }
     return (
         <li>
-            <Card className={classes.ExpenseItem}>
-                {/*<div>{props.date}</div>*/}
-                <div className={classes.ExpenseItemDescription}>
-                    <h2>{props.title}</h2>
-                    <div className={classes.ExpenseItemPrice}>${props.amount}</div>
-                </div>
+            <Card className={classes.WorkHoursList}>
+                <WorkHoursDate date={props.date}/>
+                <div className={classes.WorkHoursListDescription}><h2>{props.customer} - {props.task}</h2></div>
+                <WorkHoursLocation location={props.location}/>
+                <WorkHoursEmployee
+                    employee={props.employee}
+                    token={props.token}/>
+                <div className={classes.WorkHoursListHours}>{props.workHours}h</div>
             </Card>
         </li>
     );

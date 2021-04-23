@@ -7,33 +7,50 @@ import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList
 const AllWorkHours = () => {
 
 
-    const DUMMY_EXPENSES = [
-        {
-            id: 'e1',
-            title: 'Toilet Paper',
-            amount: 94.12,
-            date: new Date(2020, 7, 14),
-        },
-        { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12) },
-        {
-            id: 'e3',
-            title: 'Car Insurance',
-            amount: 294.67,
-            date: new Date(2021, 2, 28),
-        },
-        {
-            id: 'e4',
-            title: 'New Desk (Wooden)',
-            amount: 450,
+    const DUMMY_DATA = [
+        {   id: 1,
             date: new Date(2021, 5, 12),
+            customer: 'Kunde 1',
+            location: 'Nellingen',
+            token: 'TA',
+            task: 'Aufgabe1',
+            comment: 'Kommentar',
+            employee: 'Tino Allgöwer',
+            workHours: 7,
+            chainsawHours: 2,
+            machineHours: 3,
         },
+        {   id: 2,
+            date: new Date(2021, 5, 12),
+            customer: 'Kunde 2',
+            location: 'Nellingen',
+            token: 'TA',
+            task: 'Aufgabe2',
+            comment: 'Kommentar',
+            employee: 'Tino Allgöwer',
+            workHours: 2,
+            chainsawHours: 2,
+            machineHours: 3,
+        },
+        {   id: 3,
+            date: new Date(2021, 5, 12),
+            customer: 'Kunde 1',
+            location: 'Nellingen',
+            token: 'TA',
+            task: 'Aufgabe3',
+            comment: 'Kommentar',
+            employee: 'Tino Allgöwer',
+            workHours: 5,
+            chainsawHours: 2,
+            machineHours: 3,
+        }
     ];
 
 
     return (
         <div className={classes.AllWorkHours}>
             <Link to='/erfassen'><Button>Erfassen</Button></Link>
-            <AllWorkHoursList items={DUMMY_EXPENSES}/>
+            <AllWorkHoursList items={DUMMY_DATA}/>
         </div>
     );
 };

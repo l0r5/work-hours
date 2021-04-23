@@ -1,0 +1,19 @@
+.WorkHoursDate{
+    display: flex;
+    width: 6.8rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+.WorkHoursDate__icon {
+    color: #5e6267;
+}
+
+.WorkHoursDate__day {
+    font-weight: bold;
+}
+
+.WorkHoursDate__month {
+    font-weight: bold;
+}

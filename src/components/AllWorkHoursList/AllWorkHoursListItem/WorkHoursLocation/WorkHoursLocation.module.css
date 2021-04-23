@@ -1,0 +1,14 @@
+.WorkHoursLocation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.WorkHoursLocation__icon {
+    color: #5e6267;
+}
+
+.WorkHoursLocation__location {
+    font-size: 0.85rem;
+    font-weight: bold;
+}
