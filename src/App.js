@@ -1,14 +1,14 @@
 import {useState} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import NotFound from './pages/NotFound/NotFound';
+import Layout from './components/Layout/Layout';
 import AllWorkHours from './pages/AllWorkHours/AllWorkHours';
 import NewWorkHours from './pages/NewWorkHours/NewWorkHours';
-import Layout from './components/Layout/Layout';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     const loginHandler = (email, password) => {
         // check email and password

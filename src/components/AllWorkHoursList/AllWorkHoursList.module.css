@@ -1,0 +1,9 @@
+.AllWorkHoursList {
+    list-style: none;
+    padding: 0;
+}
+
+.AllWorkHoursList__fallback {
+    color: white;
+    text-align: center;
+}
