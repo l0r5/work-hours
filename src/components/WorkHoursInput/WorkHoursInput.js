@@ -161,8 +161,8 @@ const WorkHoursInput = (props) => {
 
     const getFormControlClasses = (hasError) => {
         return hasError
-            ? [classes.formControl, classes.invalid].join(' ')
-            : classes.formControl.toString();
+            ? [classes.FormControl, classes.invalid].join(' ')
+            : classes.FormControl.toString();
     };
 
     return (

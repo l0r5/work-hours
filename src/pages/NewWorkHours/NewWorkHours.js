@@ -1,8 +1,13 @@
 import WorkHoursInput from '../../components/WorkHoursInput/WorkHoursInput';
 
+import classes from './NewWorkHours.module.css';
+
 const NewWorkHours = () => {
     return (
-        <WorkHoursInput />
+        <div className={classes.NewWorkHours}>
+
+            <WorkHoursInput/>
+        </div>
     );
 };
 
