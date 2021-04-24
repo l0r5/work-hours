@@ -1,0 +1,90 @@
+.ListSmall {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 1rem;
+    cursor: pointer;
+}
+
+.ListSmallDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+    flex-flow: column-reverse;
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.List h2 {
+    font-size: 1rem;
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.ListHours {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #6f7579;
+    padding: 0.5rem;
+    border-radius: 12px;
+}
+
+.ListCollapsed {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+    margin: 1rem;
+    cursor: pointer;
+}
+
+.ListCollapsedHeader {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.ListCollapsedBody {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    justify-items: flex-end;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
+.ListCollapsedBodyRight {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+@media (min-width: 580px) {
+    .ListSmallDescription {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        flex: 1;
+    }
+
+    .ListDescription h2 {
+        font-size: 1.25rem;
+    }
+
+    .ListHours {
+        font-size: 1.25rem;
+        padding: 0.5rem 1.5rem;
+    }
+}

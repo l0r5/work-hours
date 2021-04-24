@@ -1,4 +1,4 @@
-import CalendarToday from '@material-ui/icons/CalendarToday';
+import DateRange from '@material-ui/icons/DateRange';
 
 import classes from './WorkHoursDate.module.css';
 
@@ -10,7 +10,7 @@ const WorkHoursDate = (props) => {
 
     return (
         <div className={classes.WorkHoursDate}>
-            <CalendarToday className={classes.WorkHoursDate__icon}/>
+            <DateRange className={classes.WorkHoursDate__icon}/>
             <span className={classes.WorkHoursDate__day}>{day}</span>
             <span className={classes.WorkHoursDate__month}>{month}</span>
             <span>{year}</span>
