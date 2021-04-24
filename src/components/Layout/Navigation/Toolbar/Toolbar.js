@@ -1,5 +1,4 @@
 import classes from './Toolbar.module.css';
-import Button from '../../../UI/Button/Button';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import Logo from '../Logo/Logo';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
@@ -15,7 +14,7 @@ const Toolbar = (props) => {
             <div className={classes.Logo}>
                 <Logo/>
             </div>
-            <Button onClick={props.onLogout}>Logout</Button>
+            <span onClick={props.onLogout} className={classes.Logout}>Logout</span>
         </header>
     );
 };

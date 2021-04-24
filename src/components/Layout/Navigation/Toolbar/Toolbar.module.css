@@ -17,7 +17,22 @@
     height: 100%;
 }
 
-@media (max-width: 499px) {
+.Logout {
+    text-decoration: none;
+    font-size: 1.25rem;
+    color: #5e6267;
+    box-sizing: border-box;
+    display: block;
+    cursor: pointer;
+}
+
+.Logout:hover,
+.Logout:active,
+.Logout.active {
+    color: #1a72e6;
+}
+
+@media (max-width: 768px) {
     .DesktopOnly {
         display: none;
     }

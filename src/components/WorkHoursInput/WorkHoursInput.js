@@ -1,11 +1,16 @@
-import classes from './WorkHoursInput.module.css';
+import {useState} from 'react';
+import { Redirect } from 'react-router'
 
+import classes from './WorkHoursInput.module.css';
 import useInput from '../../hooks/use-input';
 import Button from '../UI/Button/Button';
 
 const isNotEmpty = value => value.trim() !== '';
 
 const WorkHoursInput = (props) => {
+
+    const [submitted, setSubmitted] = useState(false);
+
     const {
         value: enteredDate,
         isValid: enteredDateIsValid,
@@ -111,7 +116,7 @@ const WorkHoursInput = (props) => {
         formIsValid = true;
     }
 
-    const formSubmissionHandler = async (event) => {
+    const formSubmissionHandler = (event) => {
         event.preventDefault();
 
         if (!formIsValid) {
@@ -131,7 +136,7 @@ const WorkHoursInput = (props) => {
             return;
         }
 
-        await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json', {
+        fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json', {
             method: 'POST',
             body: JSON.stringify({
                 date: enteredDate,
@@ -145,7 +150,10 @@ const WorkHoursInput = (props) => {
                 chainsawHours: enteredChainsawHours,
                 machineHours: enteredMachineHours
             })
-        });
+        }).then(() => {
+                setSubmitted(true);
+            }
+        );
 
         resetDateInput();
         resetCustomerInput();
@@ -164,6 +172,10 @@ const WorkHoursInput = (props) => {
             ? [classes.FormControl, classes.invalid].join(' ')
             : classes.FormControl.toString();
     };
+
+    if (submitted) {
+        return <Redirect push to={{pathname: '/'}}/>
+    }
 
     return (
         <form onSubmit={formSubmissionHandler}>
@@ -265,7 +277,7 @@ const WorkHoursInput = (props) => {
                 <p className={classes.errorText}>MachineHours must not be empty!</p>}
             </div>
             <div className="form-control">
-                <Button disabled={!formIsValid}>Submit</Button>
+                <Button disabled={!formIsValid} onClick={formSubmissionHandler}>Submit</Button>
             </div>
         </form>
     );
