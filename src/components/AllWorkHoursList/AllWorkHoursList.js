@@ -23,6 +23,7 @@ const AllWorkHoursList = (props) => {
                 {list.map((workHoursEntry) => (
                     <ListItem
                         key={workHoursEntry.id}
+                        id={workHoursEntry.id}
                         date={workHoursEntry.date}
                         customer={workHoursEntry.customer}
                         location={workHoursEntry.location}

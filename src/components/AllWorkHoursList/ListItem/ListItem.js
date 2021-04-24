@@ -3,8 +3,31 @@ import classes from './ListItem.module.css';
 import WorkHoursDate from './WorkHoursDate/WorkHoursDate';
 import WorkHoursLocation from './WorkHoursLocation/WorkHoursLocation';
 import WorkHoursEmployee from './WorkHoursEmployee/WorkHoursEmployee';
+import Button from '../../UI/Button/Button';
+import {useHistory} from 'react-router-dom';
+
 
 const ListItem = (props) => {
+    const history = useHistory();
+
+    const onEditHandler = () => {
+        history.push({
+            pathname: `/bearbeiten/${props.id}`,
+            state: {
+                id: props.id,
+                date: props.date,
+                customer: props.customer,
+                location: props.location,
+                token: props.token,
+                task: props.task,
+                comment: props.comment,
+                employee: props.employee,
+                workHours: props.workHours,
+                chainsawHours: props.chainsawHours,
+                machineHours: props.machineHours
+            }
+        });
+    };
 
     const small =
         <Card className={classes.ListSmall} clicked={props.clicked}>
@@ -26,7 +49,7 @@ const ListItem = (props) => {
                 <div className={classes.ListHours}>{props.workHours}h</div>
             </div>
             <div className={classes.ListCollapsedBody}>
-                    {props.comment}
+                {props.comment}
                 <div className={classes.ListCollapsedBodyRight}>
                     <span>Chainsaw Hours: {props.chainsawHours}</span>
                     <span>Machine Hours: {props.machineHours}</span>
@@ -36,7 +59,10 @@ const ListItem = (props) => {
                     <WorkHoursLocation location={props.location}/>
                 </div>
             </div>
-            <WorkHoursDate date={props.date}/>
+            <div className={classes.ListCollapsedFooter}>
+                <WorkHoursDate date={props.date}/>
+                <Button onClick={onEditHandler}>Bearbeiten</Button>
+            </div>
         </Card>;
     return (
         <li>

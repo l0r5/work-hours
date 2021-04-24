@@ -5,6 +5,7 @@ import Layout from './components/Layout/Layout';
 import AllWorkHours from './pages/AllWorkHours/AllWorkHours';
 import NewWorkHours from './pages/NewWorkHours/NewWorkHours';
 import NotFound from './pages/NotFound/NotFound';
+import EditWorkHours from './pages/EditWorkHours/EditWorkHours';
 
 function App() {
 
@@ -30,6 +31,9 @@ function App() {
                 </Route>
                 <Route path='/erfassen' exact>
                     <NewWorkHours/>
+                </Route>
+                <Route path='/bearbeiten/:id' exact>
+                    <EditWorkHours/>
                 </Route>
                 <Route path='*'>
                     <NotFound/>

@@ -60,3 +60,9 @@
 .errorText {
     color: #b40e0e;
 }
+
+.EditFormButtonControls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
