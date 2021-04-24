@@ -2,10 +2,7 @@
     text-decoration: none;
 }
 
-.WorkHoursLoading {
-    text-align: center;
-
-}.WorkHoursError {
+.WorkHoursError {
     text-align: center;
     color: red;
 }

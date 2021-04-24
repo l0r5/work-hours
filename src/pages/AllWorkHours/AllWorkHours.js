@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import classes from './AllWorkHours.module.css';
 import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const AllWorkHours = () => {
     const [workHours, setWorkHours] = useState([]);
@@ -47,9 +48,8 @@ const AllWorkHours = () => {
 
     if (isLoading) {
         return (
-            <section className={classes.WorkHoursLoading}>
-                <p>Loading...</p>
-            </section>);
+            <Spinner/>
+        );
     }
 
     if (httpError) {
