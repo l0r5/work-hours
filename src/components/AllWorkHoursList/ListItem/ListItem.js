@@ -5,6 +5,7 @@ import WorkHoursLocation from './WorkHoursLocation/WorkHoursLocation';
 import WorkHoursEmployee from './WorkHoursEmployee/WorkHoursEmployee';
 import Button from '../../UI/Button/Button';
 import {useHistory} from 'react-router-dom';
+import Delete from '@material-ui/icons/Delete';
 
 
 const ListItem = (props) => {
@@ -62,6 +63,7 @@ const ListItem = (props) => {
             <div className={classes.ListCollapsedFooter}>
                 <WorkHoursDate date={props.date}/>
                 <Button onClick={onEditHandler}>Bearbeiten</Button>
+                <Delete onClick={props.onDeleteHandler} className={classes.DeleteIcon}/>
             </div>
         </Card>;
     return (

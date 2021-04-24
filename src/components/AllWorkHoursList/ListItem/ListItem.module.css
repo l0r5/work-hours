@@ -115,3 +115,14 @@
     flex-wrap: wrap;
 }
 
+.DeleteIcon {
+    cursor: pointer;
+    color: #5e6267;
+    font-size: 3rem;
+}
+
+.DeleteIcon:hover {
+    cursor: pointer;
+    color: red;
+
+}
