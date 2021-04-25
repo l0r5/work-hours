@@ -118,12 +118,12 @@
 .DeleteIcon {
     cursor: pointer;
     color: #5e6267;
-    font-size: 2.5rem;
+    font-size: 3em !important;
 }
 
 @media (min-width: 769px) {
     .DeleteIcon {
-        font-size: 3rem;
+        font-size: 3.5rem !important;
     }
 }
 
