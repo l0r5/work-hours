@@ -57,6 +57,10 @@
     overflow: hidden;
 }
 
+.ListCollapsed a {
+    color: inherit;
+}
+
 @media (min-width: 769px) {
     .ListCollapsed {
         margin: 1rem;
@@ -102,3 +106,29 @@
     align-items: flex-start;
 }
 
+.ListCollapsedFooter {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 16px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.DeleteIcon {
+    cursor: pointer;
+    color: #5e6267;
+    font-size: 3em !important;
+}
+
+@media (min-width: 769px) {
+    .DeleteIcon {
+        font-size: 3.5rem !important;
+    }
+}
+
+.DeleteIcon:hover {
+    cursor: pointer;
+    color: red;
+
+}

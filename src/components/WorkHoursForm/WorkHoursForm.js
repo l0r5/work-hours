@@ -1,15 +1,23 @@
-import {useState} from 'react';
-import { Redirect } from 'react-router'
-
-import classes from './WorkHoursInput.module.css';
+import classes from './WorkHoursForm.module.css';
 import useInput from '../../hooks/use-input';
 import Button from '../UI/Button/Button';
+import TextButton from '../UI/TextButton/TextButton';
 
 const isNotEmpty = value => value.trim() !== '';
 
-const WorkHoursInput = (props) => {
+const WorkHoursForm = (props) => {
 
-    const [submitted, setSubmitted] = useState(false);
+    const initialId = props.initalValues ? props.initalValues.id : null;
+    const initialDate = props.initalValues ? props.initalValues.date : null;
+    const initialCustomer = props.initalValues ? props.initalValues.customer : null;
+    const initialLocation = props.initalValues ? props.initalValues.location : null;
+    const initialComment = props.initalValues ? props.initalValues.comment : null;
+    const initialToken = props.initalValues ? props.initalValues.token : null;
+    const initialTask = props.initalValues ? props.initalValues.task : null;
+    const initialEmployee = props.initalValues ? props.initalValues.employee : null;
+    const initialWorkHours = props.initalValues ? props.initalValues.workHours : null;
+    const initialChainsawHours = props.initalValues ? props.initalValues.chainsawHours : null;
+    const initialMachineHours = props.initalValues ? props.initalValues.machineHours : null;
 
     const {
         value: enteredDate,
@@ -17,8 +25,7 @@ const WorkHoursInput = (props) => {
         hasError: dateInputHasError,
         valueChangedHandler: dateChangedHandler,
         inputBlurHandler: dateBlurHandler,
-        reset: resetDateInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialDate, isNotEmpty);
 
     const {
         value: enteredCustomer,
@@ -26,8 +33,7 @@ const WorkHoursInput = (props) => {
         hasError: customerInputHasError,
         valueChangedHandler: customerChangedHandler,
         inputBlurHandler: customerBlurHandler,
-        reset: resetCustomerInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialCustomer, isNotEmpty);
 
     const {
         value: enteredLocation,
@@ -35,8 +41,7 @@ const WorkHoursInput = (props) => {
         hasError: locationInputHasError,
         valueChangedHandler: locationChangedHandler,
         inputBlurHandler: locationBlurHandler,
-        reset: resetLocationInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialLocation, isNotEmpty);
 
     const {
         value: enteredComment,
@@ -44,8 +49,7 @@ const WorkHoursInput = (props) => {
         hasError: commentInputHasError,
         valueChangedHandler: commentChangedHandler,
         inputBlurHandler: commentBlurHandler,
-        reset: resetCommentInput
-    } = useInput(() => true);
+    } = useInput(initialComment, () => true);
 
     const {
         value: enteredToken,
@@ -53,8 +57,7 @@ const WorkHoursInput = (props) => {
         hasError: tokenInputHasError,
         valueChangedHandler: tokenChangedHandler,
         inputBlurHandler: tokenBlurHandler,
-        reset: resetTokenInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialToken, isNotEmpty);
 
     const {
         value: enteredTask,
@@ -62,8 +65,7 @@ const WorkHoursInput = (props) => {
         hasError: taskInputHasError,
         valueChangedHandler: taskChangedHandler,
         inputBlurHandler: taskBlurHandler,
-        reset: resetTaskInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialTask, isNotEmpty);
 
     const {
         value: enteredEmployee,
@@ -71,8 +73,7 @@ const WorkHoursInput = (props) => {
         hasError: employeeInputHasError,
         valueChangedHandler: employeeChangedHandler,
         inputBlurHandler: employeeBlurHandler,
-        reset: resetEmployeeInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialEmployee, isNotEmpty);
 
     const {
         value: enteredWorkHours,
@@ -80,8 +81,7 @@ const WorkHoursInput = (props) => {
         hasError: workHoursInputHasError,
         valueChangedHandler: workHoursChangedHandler,
         inputBlurHandler: workHoursBlurHandler,
-        reset: resetWorkHoursInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialWorkHours, isNotEmpty);
 
     const {
         value: enteredChainsawHours,
@@ -89,8 +89,7 @@ const WorkHoursInput = (props) => {
         hasError: chainsawHoursInputHasError,
         valueChangedHandler: chainsawHoursChangedHandler,
         inputBlurHandler: chainsawHoursBlurHandler,
-        reset: resetChainsawHoursInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialChainsawHours, isNotEmpty);
 
     const {
         value: enteredMachineHours,
@@ -98,8 +97,7 @@ const WorkHoursInput = (props) => {
         hasError: machineHoursInputHasError,
         valueChangedHandler: machineHoursChangedHandler,
         inputBlurHandler: machineHoursBlurHandler,
-        reset: resetMachineHoursInput
-    } = useInput(isNotEmpty);
+    } = useInput(initialMachineHours, isNotEmpty);
 
     let formIsValid = false;
 
@@ -136,35 +134,19 @@ const WorkHoursInput = (props) => {
             return;
         }
 
-        fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json', {
-            method: 'POST',
-            body: JSON.stringify({
-                date: enteredDate,
-                customer: enteredCustomer,
-                location: enteredLocation,
-                token: enteredToken,
-                task: enteredTask,
-                comment: enteredComment,
-                employee: enteredEmployee,
-                workHours: enteredWorkHours,
-                chainsawHours: enteredChainsawHours,
-                machineHours: enteredMachineHours
-            })
-        }).then(() => {
-                setSubmitted(true);
-            }
-        );
-
-        resetDateInput();
-        resetCustomerInput();
-        resetLocationInput();
-        resetCommentInput();
-        resetTokenInput();
-        resetTaskInput();
-        resetEmployeeInput();
-        resetWorkHoursInput();
-        resetChainsawHoursInput();
-        resetMachineHoursInput();
+        props.onSubmit({
+            id: initialId,
+            date: enteredDate,
+            customer: enteredCustomer,
+            location: enteredLocation,
+            token: enteredToken,
+            task: enteredTask,
+            comment: enteredComment,
+            employee: enteredEmployee,
+            workHours: enteredWorkHours,
+            chainsawHours: enteredChainsawHours,
+            machineHours: enteredMachineHours
+        })
     };
 
     const getFormControlClasses = (hasError) => {
@@ -173,8 +155,26 @@ const WorkHoursInput = (props) => {
             : classes.FormControl.toString();
     };
 
-    if (submitted) {
-        return <Redirect push to={{pathname: '/'}}/>
+    let buttonControls;
+
+    switch (props.type) {
+        case 'new':
+            buttonControls =
+                <Button disabled={!formIsValid}
+                        onClick={formSubmissionHandler}>Submit</Button>;
+            break;
+        case 'edit':
+            buttonControls =
+                <div className={classes.EditFormButtonControls}>
+                    <TextButton clicked={() => {
+                        props.onBack();
+                    }}>Zurück</TextButton>
+                    <Button disabled={!formIsValid}
+                            onClick={formSubmissionHandler}>Update</Button>
+                </div>;
+            break;
+        default:
+            break;
     }
 
     return (
@@ -277,10 +277,10 @@ const WorkHoursInput = (props) => {
                 <p className={classes.errorText}>MachineHours must not be empty!</p>}
             </div>
             <div className="form-control">
-                <Button disabled={!formIsValid} onClick={formSubmissionHandler}>Submit</Button>
+                {buttonControls}
             </div>
         </form>
     );
 };
 
-export default WorkHoursInput;
+export default WorkHoursForm;

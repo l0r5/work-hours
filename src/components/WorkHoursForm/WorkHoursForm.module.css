@@ -24,8 +24,8 @@
 
 .FormControl input:focus {
     outline: none;
-    border-color: #240370;
-    background-color: #e0d4fd;
+    border-color: #1a73e8;
+    background-color: #b8c3d9;
 }
 
 .control-group {
@@ -59,4 +59,10 @@
 
 .errorText {
     color: #b40e0e;
+}
+
+.EditFormButtonControls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
