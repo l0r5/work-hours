@@ -9,7 +9,7 @@ import EditWorkHours from './pages/EditWorkHours/EditWorkHours';
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const loginHandler = (email, password) => {
         // check email and password
