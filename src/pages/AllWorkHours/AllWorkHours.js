@@ -11,7 +11,6 @@ const AllWorkHours = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState();
 
-
     useEffect(() => {
         fetchWorkHours().catch(error => {
             setIsLoading(false);
@@ -20,6 +19,7 @@ const AllWorkHours = () => {
     }, []);
 
     const fetchWorkHours = async () => {
+        setIsLoading(true);
         const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json');
         if (!response.ok) {
             throw new Error('Something went wrong!');
@@ -46,14 +46,15 @@ const AllWorkHours = () => {
         setIsLoading(false);
         console.log("Fetched Work Hours from Database.")
     };
+
     const deleteItemRequestHandler = async (id) => {
-        setIsLoading(true);
         const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours/' + id + '.json', {
             method: 'DELETE'
         });
         if (!response.ok) {
             throw new Error('Something went wrong!');
         }
+
         await console.log("Deleted element with id: " + id);
         await fetchWorkHours();
     };
