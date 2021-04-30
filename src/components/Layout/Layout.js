@@ -7,10 +7,8 @@ import SideDrawer from './Navigation/SideDrawer/SideDrawer';
 import AuthContext from '../../store/auth-context';
 
 const Layout = (props) => {
-
+    const authCtx = useContext(AuthContext);
     const [showSideDrawer, setShowSideDrawer] = useState(false);
-
-    const ctx = useContext(AuthContext);
 
     const sideDrawerCloseHandler = () => {
         setShowSideDrawer(false);
@@ -20,12 +18,12 @@ const Layout = (props) => {
         setShowSideDrawer(!showSideDrawer);
     }
 
-    if (ctx.isLoggedIn) {
+    if (authCtx.isLoggedIn) {
         return (
             <Fragment>
                 <Toolbar
                     drawerToggleClicked={sideDrawerToggleHandler}
-                    onLogout={ctx.onLogout}/>
+                    onLogout={authCtx.onLogout}/>
                 <SideDrawer
                     open={showSideDrawer}
                     closed={sideDrawerCloseHandler}/>
@@ -33,7 +31,7 @@ const Layout = (props) => {
             </Fragment>
         );
     } else {
-        return <Login onLogin={ctx.onLogin}/>;
+        return <Login/>;
     }
 };
 
