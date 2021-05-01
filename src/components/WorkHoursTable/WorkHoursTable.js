@@ -7,11 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import TableToolbar from './TableToolbar/TableToolbar';
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
 
 import classes from './WorkHoursTable.module.css';
+import EnhancedTableRow from './EnhancedTableRow/EnhancedTableRow';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -53,7 +53,6 @@ const WorkHoursTable = (props) => {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
 
     let rows = null;
 
@@ -131,48 +130,21 @@ const WorkHoursTable = (props) => {
                             rowCount={rows ? rows.length : 0}
                         />
                         <TableBody>
-                            {
-                                stableSort(rows, getComparator(order, orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row, index) => {
-                                        const isItemSelected = isSelected(row.id);
-                                        const labelId = `enhanced-table-checkbox-${index}`;
-
-                                        return (
-                                            <TableRow
-                                                hover
-                                                onClick={(event) => handleClick(event, row.id)}
-                                                role="checkbox"
-                                                aria-checked={isItemSelected}
-                                                tabIndex={-1}
-                                                key={row.id}
-                                                selected={isItemSelected}
-                                            >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        checked={isItemSelected}
-                                                        inputProps={{'aria-labelledby': labelId}}
-                                                    />
-                                                </TableCell>
-                                                <TableCell component="th"
-                                                           id={labelId}
-                                                           scope="row">{row.id}
-                                                </TableCell>
-                                                <TableCell align="left">{row.date}</TableCell>
-                                                <TableCell align="left">{row.customer}</TableCell>
-                                                <TableCell align="left">{row.location}</TableCell>
-                                                <TableCell align="left">{row.token}</TableCell>
-                                                <TableCell align="left">{row.comment}</TableCell>
-                                                <TableCell align="left">{row.employee}</TableCell>
-                                                <TableCell
-                                                    align="right">{row.workHours} </TableCell>
-                                                <TableCell
-                                                    align="right">{row.chainsawHours}</TableCell>
-                                                <TableCell
-                                                    align="right">{row.machineHours}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
+                            {stableSort(rows, getComparator(order, orderBy))
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, index) => {
+                                    const isItemSelected = isSelected(row.id);
+                                    const labelId = `enhanced-table-checkbox-${index}`;
+                                    return (
+                                        <EnhancedTableRow
+                                            key={row.id}
+                                            click={handleClick}
+                                            item={row}
+                                            isSelected={isItemSelected}
+                                            labelId={labelId}
+                                        />
+                                    );
+                                })}
                             {emptyRows > 0 && (
                                 <TableRow style={{height: 53 * emptyRows}}>
                                     <TableCell colSpan={6}/>
