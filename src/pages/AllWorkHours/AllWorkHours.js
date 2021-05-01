@@ -5,6 +5,7 @@ import Button from '../../components/UI/Button/Button';
 import classes from './AllWorkHours.module.css';
 import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import WorkHoursTable from '../../components/WorkHoursTable/WorkHoursTable';
 
 const AllWorkHours = () => {
     const [workHours, setWorkHours] = useState([]);
@@ -75,6 +76,7 @@ const AllWorkHours = () => {
     return (
         <div className={classes.AllWorkHours}>
             <Link to='/erfassen'><Button>Erfassen</Button></Link>
+            <WorkHoursTable items={workHours} deleteRequestHandler={deleteItemRequestHandler}/>
             <AllWorkHoursList items={workHours} deleteRequestHandler={deleteItemRequestHandler}/>
         </div>
     );
