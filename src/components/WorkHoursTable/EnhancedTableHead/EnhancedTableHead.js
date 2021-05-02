@@ -9,6 +9,8 @@ import React from 'react';
 import classes from './EnhancedTableHead.module.css';
 
 const headCells = [
+    {id: 'view', numeric: false, label: ''},
+    {id: 'edit', numeric: false, label: ''},
     {id: 'id', numeric: false, label: 'ID'},
     {id: 'date', numeric: false, label: 'Date'},
     {id: 'customer', numeric: false, label: 'Customer'},

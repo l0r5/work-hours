@@ -2,12 +2,13 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react';
+import {Edit, OpenInNew} from '@material-ui/icons';
+import Icon from '../../UI/Icon/Icon';
 
 const EnhancedTableRow = (props) => {
     return (
         <TableRow
             hover
-            onClick={(event) => props.click(event, props.item.id)}
             role="checkbox"
             aria-checked={props.isSelected}
             tabIndex={-1}
@@ -15,9 +16,20 @@ const EnhancedTableRow = (props) => {
         >
             <TableCell padding="checkbox">
                 <Checkbox
+                    onClick={(event) => props.click(event, props.item.id)}
                     checked={props.isSelected}
                     inputProps={{'aria-labelledby': props.labelId}}
                 />
+            </TableCell>
+            <TableCell padding="none" align="center">
+                <Icon>
+                    <OpenInNew/>
+                </Icon>
+            </TableCell>
+            <TableCell padding="none" align="center">
+                <Icon>
+                    <Edit/>
+                </Icon>
             </TableCell>
             <TableCell component="th"
                        id={props.labelId}
