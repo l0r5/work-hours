@@ -47,7 +47,8 @@ const EditWorkHours = () => {
         );
     }
 
-    const onBackHandler = () => {
+    const onBackHandler = (event) => {
+        event.preventDefault();
         history.push('/');
     };
     return (
