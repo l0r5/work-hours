@@ -48,7 +48,7 @@ const EditWorkHours = () => {
     }
 
     const onBackHandler = () => {
-        history.goBack();
+        history.push('/');
     };
     return (
         <div className={classes.NewWorkHours}>

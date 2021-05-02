@@ -23,7 +23,7 @@ const EnhancedTableRow = (props) => {
                 />
             </TableCell>
             <TableCell padding="none" align="center">
-                <Icon>
+                <Icon click={() => props.onDetailViewClick(props.item)}>
                     <OpenInNew/>
                 </Icon>
             </TableCell>

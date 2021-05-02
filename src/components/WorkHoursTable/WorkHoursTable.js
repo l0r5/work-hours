@@ -12,7 +12,6 @@ import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
 
 import classes from './WorkHoursTable.module.css';
 import EnhancedTableRow from './EnhancedTableRow/EnhancedTableRow';
-import {useHistory} from 'react-router-dom';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -48,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WorkHoursTable = (props) => {
-    const history = useHistory();
     const materialClasses = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -57,20 +55,17 @@ const WorkHoursTable = (props) => {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     let rows = null;
-
     if (props.items) {
-        console.log("Props");
-        console.log(props.items);
         rows = [...props.items];
     }
 
-    const handleRequestSort = (event, property) => {
+    const onSortRequestHandler = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
 
-    const handleSelectAllClick = (event) => {
+    const onSelectAllCheckboxesHandler = (event) => {
         if (event.target.checked) {
             const newSelected = rows.map((n) => n.id);
             setSelected(newSelected);
@@ -79,7 +74,7 @@ const WorkHoursTable = (props) => {
         setSelected([]);
     };
 
-    const handleClick = (event, id) => {
+    const onCheckBoxClickHandler = (event, id) => {
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -99,33 +94,13 @@ const WorkHoursTable = (props) => {
         setSelected(newSelected);
     };
 
-    const handleChangePage = (event, newPage) => {
+    const onPageChangeHandler = (event, newPage) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
+    const onRowsPerPageChangeHandler = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-    };
-
-    const onEditHandler = (item) => {
-        console.log("Clicked")
-        history.push({
-            pathname: `/bearbeiten/${item.id}`,
-            state: {
-                id: item.id,
-                date: item.date,
-                customer: item.customer,
-                location: item.location,
-                token: item.token,
-                task: item.task,
-                comment: item.comment,
-                employee: item.employee,
-                workHours: item.workHours,
-                chainsawHours: item.chainsawHours,
-                machineHours: item.machineHours
-            }
-        });
     };
 
     const isSelected = (id) => selected.indexOf(id) !== -1;
@@ -147,8 +122,8 @@ const WorkHoursTable = (props) => {
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
+                            onSelectAllClick={onSelectAllCheckboxesHandler}
+                            onRequestSort={onSortRequestHandler}
                             rowCount={rows ? rows.length : 0}
                         />
                         <TableBody>
@@ -160,11 +135,12 @@ const WorkHoursTable = (props) => {
                                     return (
                                         <EnhancedTableRow
                                             key={row.id}
-                                            click={handleClick}
+                                            click={onCheckBoxClickHandler}
                                             item={row}
                                             isSelected={isItemSelected}
                                             labelId={labelId}
-                                            onEditClick={onEditHandler}
+                                            onEditClick={props.onEditItemClick}
+                                            onDetailViewClick={props.onDetailViewClick}
                                         />
                                     );
                                 })}
@@ -182,8 +158,8 @@ const WorkHoursTable = (props) => {
                     count={rows ? rows.length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    onChangePage={onPageChangeHandler}
+                    onChangeRowsPerPage={onRowsPerPageChangeHandler}
                 />
             </Paper>
         </div>
