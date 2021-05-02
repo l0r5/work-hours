@@ -12,6 +12,7 @@ import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
 
 import classes from './WorkHoursTable.module.css';
 import EnhancedTableRow from './EnhancedTableRow/EnhancedTableRow';
+import {useHistory} from 'react-router-dom';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WorkHoursTable = (props) => {
+    const history = useHistory();
     const materialClasses = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -106,6 +108,26 @@ const WorkHoursTable = (props) => {
         setPage(0);
     };
 
+    const onEditHandler = (item) => {
+        console.log("Clicked")
+        history.push({
+            pathname: `/bearbeiten/${item.id}`,
+            state: {
+                id: item.id,
+                date: item.date,
+                customer: item.customer,
+                location: item.location,
+                token: item.token,
+                task: item.task,
+                comment: item.comment,
+                employee: item.employee,
+                workHours: item.workHours,
+                chainsawHours: item.chainsawHours,
+                machineHours: item.machineHours
+            }
+        });
+    };
+
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows ? rows.length : 0 - page * rowsPerPage);
@@ -142,6 +164,7 @@ const WorkHoursTable = (props) => {
                                             item={row}
                                             isSelected={isItemSelected}
                                             labelId={labelId}
+                                            onEditClick={onEditHandler}
                                         />
                                     );
                                 })}

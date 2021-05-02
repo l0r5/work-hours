@@ -6,6 +6,7 @@ import {Edit, OpenInNew} from '@material-ui/icons';
 import Icon from '../../UI/Icon/Icon';
 
 const EnhancedTableRow = (props) => {
+
     return (
         <TableRow
             hover
@@ -27,7 +28,7 @@ const EnhancedTableRow = (props) => {
                 </Icon>
             </TableCell>
             <TableCell padding="none" align="center">
-                <Icon>
+                <Icon click={() => props.onEditClick(props.item)}>
                     <Edit/>
                 </Icon>
             </TableCell>
