@@ -3,7 +3,6 @@ import {Link, useHistory} from 'react-router-dom';
 
 import Button from '../../components/UI/Button/Button';
 import classes from './AllWorkHours.module.css';
-import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import WorkHoursTable from '../../components/WorkHoursTable/WorkHoursTable';
 import WorkHoursDetailView from '../../components/WorkHoursDetailView/WorkHoursDetailView';
@@ -118,7 +117,6 @@ const AllWorkHours = () => {
             <WorkHoursTable items={workHours} deleteRequestHandler={deleteItemRequestHandler}
                             onEditItemClick={onEditItemHandler}
                             onDetailViewClick={showDetailViewHandler}/>
-            <AllWorkHoursList items={workHours} deleteRequestHandler={deleteItemRequestHandler}/>
         </div>
     );
 };

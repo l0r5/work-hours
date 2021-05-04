@@ -1,9 +1,9 @@
 import Modal from '../UI/Modal/Modal';
 import Button from '../UI/Button/Button';
 import classes from './WorkHoursDetailView.module.css';
-import WorkHoursEmployee from '../AllWorkHoursList/ListItem/WorkHoursEmployee/WorkHoursEmployee';
-import WorkHoursLocation from '../AllWorkHoursList/ListItem/WorkHoursLocation/WorkHoursLocation';
-import WorkHoursDate from '../AllWorkHoursList/ListItem/WorkHoursDate/WorkHoursDate';
+import WorkHoursEmployee from './WorkHoursEmployee/WorkHoursEmployee';
+import WorkHoursLocation from './WorkHoursLocation/WorkHoursLocation';
+import WorkHoursDate from './WorkHoursDate/WorkHoursDate';
 
 const WorkHoursDetailView = (props) => {
     return (
