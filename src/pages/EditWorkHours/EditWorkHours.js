@@ -47,8 +47,9 @@ const EditWorkHours = () => {
         );
     }
 
-    const onBackHandler = () => {
-        history.goBack();
+    const onBackHandler = (event) => {
+        event.preventDefault();
+        history.push('/');
     };
     return (
         <div className={classes.NewWorkHours}>

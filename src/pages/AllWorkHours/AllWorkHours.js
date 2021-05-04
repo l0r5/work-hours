@@ -1,15 +1,19 @@
 import {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
 import Button from '../../components/UI/Button/Button';
 import classes from './AllWorkHours.module.css';
-import AllWorkHoursList from '../../components/AllWorkHoursList/AllWorkHoursList';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import WorkHoursTable from '../../components/WorkHoursTable/WorkHoursTable';
+import WorkHoursDetailView from '../../components/WorkHoursDetailView/WorkHoursDetailView';
 
 const AllWorkHours = () => {
+    const history = useHistory();
     const [workHours, setWorkHours] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState();
+    const [detailViewIsShown, setDetailViewIsShown] = useState(false);
+    const [detailViewItem, setDetailViewItem] = useState();
 
     useEffect(() => {
         fetchWorkHours().catch(error => {
@@ -47,6 +51,16 @@ const AllWorkHours = () => {
         console.log("Fetched Work Hours from Database.")
     };
 
+    const showDetailViewHandler = (item) => {
+        setDetailViewItem(item);
+        setDetailViewIsShown(true);
+    };
+
+    const hideDetailViewHandler = () => {
+        setDetailViewItem({});
+        setDetailViewIsShown(false);
+    };
+
     const deleteItemRequestHandler = async (id) => {
         const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours/' + id + '.json', {
             method: 'DELETE'
@@ -57,6 +71,26 @@ const AllWorkHours = () => {
 
         await console.log("Deleted element with id: " + id);
         await fetchWorkHours();
+    };
+
+    const onEditItemHandler = (item) => {
+        console.log("Clicked")
+        history.push({
+            pathname: `/bearbeiten/${item.id}`,
+            state: {
+                id: item.id,
+                date: item.date,
+                customer: item.customer,
+                location: item.location,
+                token: item.token,
+                task: item.task,
+                comment: item.comment,
+                employee: item.employee,
+                workHours: item.workHours,
+                chainsawHours: item.chainsawHours,
+                machineHours: item.machineHours
+            }
+        });
     };
 
     if (isLoading) {
@@ -72,10 +106,17 @@ const AllWorkHours = () => {
             </section>);
     }
 
+
     return (
         <div className={classes.AllWorkHours}>
             <Link to='/erfassen'><Button>Erfassen</Button></Link>
-            <AllWorkHoursList items={workHours} deleteRequestHandler={deleteItemRequestHandler}/>
+            {detailViewIsShown &&
+            <WorkHoursDetailView item={detailViewItem} onClose={hideDetailViewHandler}
+                                 onEditClick={onEditItemHandler}
+                                 onBackClick={hideDetailViewHandler}/>}
+            <WorkHoursTable items={workHours} deleteRequestHandler={deleteItemRequestHandler}
+                            onEditItemClick={onEditItemHandler}
+                            onDetailViewClick={showDetailViewHandler}/>
         </div>
     );
 };

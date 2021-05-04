@@ -1,0 +1,76 @@
+.DetailView {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.DetailView a {
+    color: inherit;
+}
+
+@media (min-width: 769px) {
+    .DetailView {
+        margin: 1rem;
+    }
+}
+
+.DetailViewHeader {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.DetailViewHeader h2 {
+    font-size: 1.25rem;
+}
+
+@media (min-width: 769px) {
+    .DetailViewHeader h2 {
+        font-size: 1.5rem;
+    }
+}
+
+.Hours {
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #6f7579;
+    padding: 0.5rem;
+    border-radius: 12px;
+}
+
+.DetailViewBody {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    justify-items: flex-end;
+    height: 100%;
+    flex-wrap: wrap;
+}
+
+.DetailViewBodyRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.DetailViewFooter {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 16px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}

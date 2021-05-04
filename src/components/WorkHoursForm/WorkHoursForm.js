@@ -166,9 +166,7 @@ const WorkHoursForm = (props) => {
         case 'edit':
             buttonControls =
                 <div className={classes.EditFormButtonControls}>
-                    <TextButton clicked={() => {
-                        props.onBack();
-                    }}>Zurück</TextButton>
+                    <TextButton clicked={(event) => props.onBack(event)}>Zurück</TextButton>
                     <Button disabled={!formIsValid}
                             onClick={formSubmissionHandler}>Update</Button>
                 </div>;
