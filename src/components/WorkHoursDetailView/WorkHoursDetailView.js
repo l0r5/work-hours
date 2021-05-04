@@ -1,22 +1,35 @@
 import Modal from '../UI/Modal/Modal';
 import Button from '../UI/Button/Button';
+import classes from './WorkHoursDetailView.module.css';
+import WorkHoursEmployee from '../AllWorkHoursList/ListItem/WorkHoursEmployee/WorkHoursEmployee';
+import WorkHoursLocation from '../AllWorkHoursList/ListItem/WorkHoursLocation/WorkHoursLocation';
+import WorkHoursDate from '../AllWorkHoursList/ListItem/WorkHoursDate/WorkHoursDate';
 
 const WorkHoursDetailView = (props) => {
     return (
         <Modal onClose={props.onClose}>
-            <div>ID: {props.item.id}</div>
-            <div>Date: {props.item.date}</div>
-            <div>Customer: {props.item.customer}</div>
-            <div>Location: {props.item.location}</div>
-            <div>Token: {props.item.token}</div>
-            <div>Task: {props.item.task}</div>
-            <div>Comment: {props.item.comment}</div>
-            <div>Employee: {props.item.employee}</div>
-            <div>WorkHours: {props.item.workHours}</div>
-            <div>ChainsawHours: {props.item.chainsawHours}</div>
-            <div>MachineHours: {props.item.machineHours}</div>
-            <Button onClick={props.onBackClick}>Zurück</Button>
-            <Button onClick={() => props.onEditClick(props.item)}>Bearbeiten</Button>
+            <div className={classes.DetailView}>
+                <div className={classes.DetailViewHeader}>
+                    <h2>{props.item.customer} - {props.item.task}</h2>
+                    <div className={classes.Hours}>{props.item.workHours}h</div>
+                </div>
+                <div className={classes.DetailViewBody}>
+                    {props.item.comment}
+                    <div className={classes.DetailViewBodyRight}>
+                        <span>Chainsaw Hours: {props.item.chainsawHours}</span>
+                        <span>Machine Hours: {props.item.machineHours}</span>
+                        <WorkHoursEmployee
+                            employee={props.item.employee}
+                            token={props.item.token}/>
+                        <WorkHoursLocation location={props.item.location}/>
+                    </div>
+                </div>
+                <div className={classes.DetailViewFooter}>
+                    <WorkHoursDate date={props.item.date}/>
+                    <Button onClick={props.onBackClick}>Zurück</Button>
+                    <Button onClick={() => props.onEditClick(props.item)}>Bearbeiten</Button>
+                </div>
+            </div>
         </Modal>
     );
 };
