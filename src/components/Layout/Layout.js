@@ -1,13 +1,10 @@
-import {Fragment, useContext, useState} from 'react';
+import {Fragment, useState} from 'react';
 
 import classes from './Layout.module.css';
 import Toolbar from './Navigation/Toolbar/Toolbar';
-import Login from '../../pages/Login/Login';
 import SideDrawer from './Navigation/SideDrawer/SideDrawer';
-import AuthContext from '../../store/auth-context';
 
 const Layout = (props) => {
-    const authCtx = useContext(AuthContext);
     const [showSideDrawer, setShowSideDrawer] = useState(false);
 
     const sideDrawerCloseHandler = () => {
@@ -18,21 +15,21 @@ const Layout = (props) => {
         setShowSideDrawer(!showSideDrawer);
     }
 
-    if (authCtx.isLoggedIn) {
-        return (
+    return (props.isLoggedIn ?
             <Fragment>
                 <Toolbar
                     drawerToggleClicked={sideDrawerToggleHandler}
-                    onLogout={authCtx.logout}/>
+                    onLogout={props.onLogout}/>
                 <SideDrawer
                     open={showSideDrawer}
                     closed={sideDrawerCloseHandler}/>
                 <main className={classes.main}>{props.children}</main>
             </Fragment>
-        );
-    } else {
-        return <Login/>;
-    }
+            :
+            <Fragment>
+                <main className={classes.main}>{props.children}</main>
+            </Fragment>
+    )
 };
 
 export default Layout;
