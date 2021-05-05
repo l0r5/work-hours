@@ -1,9 +1,9 @@
 import {useContext, useEffect, useReducer, useState} from 'react';
 
 import classes from './AuthForm.module.css';
-import Spinner from '../UI/Spinner/Spinner';
-import AuthContext from '../../store/auth-context';
-import Button from '../UI/Button/Button';
+import Spinner from '../../UI/Spinner/Spinner';
+import AuthContext from '../../../store/auth-context';
+import Button from '../../UI/Button/Button';
 
 const emailReducer = (state, action) => {
     if (action.type === 'USER_INPUT') {
@@ -83,7 +83,7 @@ const AuthForm = (props) => {
         if (props.isLoginMode) {
             url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
         } else {
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + +process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
+            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
         }
 
         fetch(url, {

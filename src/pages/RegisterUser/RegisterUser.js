@@ -1,4 +1,4 @@
-import AuthForm from '../../components/AuthForm/AuthForm';
+import AuthForm from '../../components/Forms/AuthForm/AuthForm';
 
 const RegisterUser = (props) => {
     return <AuthForm/>;

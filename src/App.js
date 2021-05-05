@@ -6,6 +6,7 @@ import NewWorkHours from './pages/NewWorkHours/NewWorkHours';
 import NotFound from './pages/NotFound/NotFound';
 import EditWorkHours from './pages/EditWorkHours/EditWorkHours';
 import RegisterUser from './pages/RegisterUser/RegisterUser';
+import UserProfile from './pages/UserProfile/UserProfile';
 
 function App() {
     return (
@@ -22,7 +23,10 @@ function App() {
                     </Route>
                     <Route path='/registrieren' exact>
                         <RegisterUser/>
-                    </Route>s
+                    </Route>
+                    <Route path='/profil' exact>
+                        <UserProfile/>
+                    </Route>
                     <Route path='*'>
                         <NotFound/>
                     </Route>

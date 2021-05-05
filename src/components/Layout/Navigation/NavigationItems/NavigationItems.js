@@ -6,6 +6,7 @@ const NavigationItems = () => (
         <NavigationItem link={"/"} exact>Übersicht</NavigationItem>
         <NavigationItem link={"/erfassen"}>Erfassen</NavigationItem>
         <NavigationItem link={"/registrieren"}>Benutzer anlegen</NavigationItem>
+        <NavigationItem link={"/profil"}>Profil</NavigationItem>
     </ul>
 );
 

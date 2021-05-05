@@ -1,7 +1,7 @@
 import classes from './WorkHoursForm.module.css';
-import useInput from '../../hooks/use-input';
-import Button from '../UI/Button/Button';
-import TextButton from '../UI/TextButton/TextButton';
+import useInput from '../../../hooks/use-input';
+import Button from '../../UI/Button/Button';
+import TextButton from '../../UI/TextButton/TextButton';
 
 const isNotEmpty = value => value.trim() !== '';
 

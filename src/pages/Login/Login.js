@@ -2,7 +2,7 @@ import React from 'react';
 
 import Card from '../../components/UI/Card/Card';
 import classes from './Login.module.css';
-import AuthForm from '../../components/AuthForm/AuthForm';
+import AuthForm from '../../components/Forms/AuthForm/AuthForm';
 
 
 const Login = (props) => {
