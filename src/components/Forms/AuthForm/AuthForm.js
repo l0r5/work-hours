@@ -76,9 +76,9 @@ const AuthForm = (props) => {
     };
 
     const submitHandler = event => {
-
         event.preventDefault();
 
+        setIsLoading(true);
         let url;
         if (props.isLoginMode) {
             url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
@@ -104,7 +104,7 @@ const AuthForm = (props) => {
                 } else {
                     res.json().then(data => {
                         let errorMessage = 'Authentication failed!';
-                        throw new Error(errorMessage);
+                        alert(errorMessage);
                     });
                 }
             })
