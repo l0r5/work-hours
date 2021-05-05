@@ -5,6 +5,7 @@ import AllWorkHours from './pages/AllWorkHours/AllWorkHours';
 import NewWorkHours from './pages/NewWorkHours/NewWorkHours';
 import NotFound from './pages/NotFound/NotFound';
 import EditWorkHours from './pages/EditWorkHours/EditWorkHours';
+import RegisterUser from './pages/RegisterUser/RegisterUser';
 
 function App() {
     return (
@@ -19,6 +20,9 @@ function App() {
                     <Route path='/bearbeiten/:id' exact>
                         <EditWorkHours/>
                     </Route>
+                    <Route path='/registrieren' exact>
+                        <RegisterUser/>
+                    </Route>s
                     <Route path='*'>
                         <NotFound/>
                     </Route>
