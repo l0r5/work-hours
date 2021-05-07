@@ -7,7 +7,7 @@ import React from 'react';
 
 const SuccessModal = (props) => {
     return (
-        <Modal onClose={props.onNext}>
+        <Modal>
             <div className={classes.Header}>
                 <Icon><CheckCircle/></Icon>
             </div>

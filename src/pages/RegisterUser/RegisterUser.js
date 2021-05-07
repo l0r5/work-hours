@@ -12,8 +12,10 @@ const RegisterUser = (props) => {
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
-    const onSubmittedFormHandler = () => {
+    const onSubmittedFormHandler = (data) => {
+        setSuccessMessage('Der neue Benutzer ' + data.email + ' wurde erfolgreich erstellt! ')
         setShowSuccessModal(true);
     };
 
@@ -23,8 +25,8 @@ const RegisterUser = (props) => {
 
     const onRequestErrorHandler = (errorMessage) => {
         console.log(errorMessage);
-        setShowErrorModal(true)
         setErrorMessage(errorMessage)
+        setShowErrorModal(true)
     }
 
     const onCloseErrorModalHandler = () => {
@@ -32,19 +34,23 @@ const RegisterUser = (props) => {
         setErrorMessage('')
     }
 
-    return <Fragment>
-        {showErrorModal &&
-        <ErrorModal onClose={onCloseErrorModalHandler} header={"Ooooops!"}>
-            {errorMessage}
-        </ErrorModal>}
-        {showSuccessModal && <SuccessModal
-            onNext={onCloseModalHandler}
-            header={"Erfolgreich!"}>
-            Der neue Benutzer wurde erfolgreich erstellt!
-        </SuccessModal>}
-        <AuthForm isLoginMode={false} onSubmitted={onSubmittedFormHandler}
-                  onRequestError={onRequestErrorHandler}/>
-    </Fragment>;
+    return (
+        <Fragment>
+            {showErrorModal &&
+            <ErrorModal
+                onClose={onCloseErrorModalHandler}
+                header={"Ooooops!"}>
+                {errorMessage}
+            </ErrorModal>}
+            {showSuccessModal && <SuccessModal
+                onNext={onCloseModalHandler}
+                header={"Erfolgreich"}>
+                {successMessage}
+            </SuccessModal>}
+            <h2>Neuen Benutzer anlegen</h2>
+            <AuthForm isLoginMode={false} onSubmitted={onSubmittedFormHandler}
+                      onRequestError={onRequestErrorHandler}/>
+        </Fragment>);
 };
 
 export default RegisterUser;

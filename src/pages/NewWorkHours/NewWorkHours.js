@@ -40,6 +40,7 @@ const NewWorkHours = () => {
 
     return (
         <div className={classes.NewWorkHours}>
+            <h2>Neue Arbeitsstunden erfasen</h2>
             <WorkHoursForm
                 type={'new'}
                 onSubmit={onSubmitAddNewHandler}

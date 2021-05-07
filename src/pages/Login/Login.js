@@ -20,8 +20,8 @@ const Login = (props) => {
 
     const onRequestErrorHandler = (errorMessage) => {
         console.log(errorMessage);
-        setShowErrorModal(true)
         setErrorMessage(errorMessage)
+        setShowErrorModal(true)
     }
 
     const onSubmittedFormHandler = (data) => {
