@@ -57,12 +57,10 @@ function App() {
         </Switch>
     );
 
-    const logoutHandler = () => {
-        authCtx.logout();
-    };
+
 
     return (
-        <Layout isLoggedIn={authCtx.isLoggedIn} onLogout={logoutHandler}>
+        <Layout isLoggedIn={authCtx.isLoggedIn}>
             {authCtx.isLoggedIn ? authRequiredZone : noAuthZone}
         </Layout>
     );
