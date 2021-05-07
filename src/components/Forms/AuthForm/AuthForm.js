@@ -1,8 +1,7 @@
-import {useContext, useEffect, useReducer, useState} from 'react';
+import {useEffect, useReducer, useState} from 'react';
 
 import classes from './AuthForm.module.css';
 import Spinner from '../../UI/Spinner/Spinner';
-import AuthContext from '../../../store/auth-context';
 import Button from '../../UI/Button/Button';
 
 const emailReducer = (state, action) => {
@@ -26,8 +25,6 @@ const passwordReducer = (state, action) => {
 };
 
 const AuthForm = (props) => {
-
-    const authCtx = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -112,18 +109,18 @@ const AuthForm = (props) => {
                 }
             })
             .then(data => {
-                if (data) {
+                console.log('data');
+                console.log(data);
+                if (data && data.expiresIn) {
                     const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
-                    authCtx.login(data.idToken, expirationTime.toString());
-                    console.log(data);
+                    props.onSubmitted({...data, expirationTime});
                 }
             })
             .catch(err => {
+                console.log('error');
+
                 console.log(err)
-                let errorMessage = 'Token Expired!\n' +
-                    'code: ' + err.error.code + '\n' +
-                    'message: ' + err.error.message;
-                props.onRequestError(errorMessage)
+                props.onRequestError(err.toString())
             });
     };
 
