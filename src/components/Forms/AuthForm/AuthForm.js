@@ -103,20 +103,27 @@ const AuthForm = (props) => {
                     return res.json();
                 } else {
                     res.json().then(data => {
-                        let errorMessage = 'Authentication failed!';
-                        alert(errorMessage);
+                        console.log(data.error)
+                        let errorMessage = 'Authentication Failed!\n' +
+                            'code: ' + data.error.code + '\n' +
+                            'message: ' + data.error.message;
+                        props.onRequestError(errorMessage)
                     });
                 }
             })
             .then(data => {
-                // props.onSubmit(data.idToken);
-                const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
-                authCtx.login(data.idToken, expirationTime.toString());
-                console.log(data);
+                if (data) {
+                    const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
+                    authCtx.login(data.idToken, expirationTime.toString());
+                    console.log(data);
+                }
             })
             .catch(err => {
-                //TODO show an error modal
-                alert(err.message);
+                console.log(err)
+                let errorMessage = 'Token Expired!\n' +
+                    'code: ' + err.error.code + '\n' +
+                    'message: ' + err.error.message;
+                props.onRequestError(errorMessage)
             });
     };
 

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 
 import Button from '../../components/UI/Button/Button';
@@ -14,7 +14,6 @@ const AllWorkHours = () => {
     const [httpError, setHttpError] = useState();
     const [detailViewIsShown, setDetailViewIsShown] = useState(false);
     const [detailViewItem, setDetailViewItem] = useState();
-    const mountedRef = useRef(true);
 
     useEffect(() => {
         fetchWorkHours().catch(error => {
@@ -22,9 +21,6 @@ const AllWorkHours = () => {
             setHttpError(error.message)
             throw error;
         });
-        return () => {
-            // fetchWorkHours().c
-        }
     }, []);
 
     const fetchWorkHours = async () => {
