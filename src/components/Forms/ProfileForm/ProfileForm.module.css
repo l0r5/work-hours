@@ -1,45 +1,49 @@
-.form {
-    width: 95%;
-    max-width: 25rem;
-    margin: 2rem auto;
+.control {
+    margin: 1rem 0;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
 }
 
-.control {
-    margin-bottom: 0.5rem;
+.control label,
+.control input {
+    display: block;
 }
 
 .control label {
     font-weight: bold;
+    flex: 1;
+    color: #464646;
     margin-bottom: 0.5rem;
-    color: #353336;
-    display: block;
 }
 
 .control input {
-    display: block;
+    flex: 3;
     font: inherit;
-    width: 100%;
-    border-radius: 4px;
-    border: 1px solid #38015c;
-    padding: 0.25rem;
-    background-color: #f7f0fa;
+    padding: 0.35rem 0.35rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
-.action {
-    margin-top: 1.5rem;
+.control input:focus {
+    outline: none;
+    border-color: #4f005f;
+    background: #f6dbfc;
 }
 
-.action button {
-    font: inherit;
-    cursor: pointer;
-    padding: 0.5rem 1.5rem;
-    border-radius: 4px;
-    background-color: #38015c;
-    color: white;
-    border: 1px solid #38015c;
+.control.invalid input {
+    border-color: red;
+    background: #fbdada;
 }
 
-.action button:hover {
-    background-color: #540d83;
-    border-color: #540d83;
+.actions {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .control {
+        align-items: center;
+        flex-direction: row;
+    }
+
 }

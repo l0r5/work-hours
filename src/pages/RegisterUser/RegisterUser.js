@@ -1,26 +1,29 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 
 import AuthForm from '../../components/Forms/AuthForm/AuthForm';
-import {useHistory} from 'react-router-dom';
 import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
+import AuthContext from '../../store/auth-context';
 
 
 const RegisterUser = (props) => {
+    const authCtx = useContext(AuthContext);
 
-    const history = useHistory();
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
+    const [submittedData, setSubmittedData] = useState();
+
     const onSubmittedFormHandler = (data) => {
+        setSubmittedData(data);
         setSuccessMessage('Der neue Benutzer ' + data.email + ' wurde erfolgreich erstellt! ')
         setShowSuccessModal(true);
     };
 
-    const onCloseModalHandler = () => {
-        history.push('/');
+    const onNextSuccessModalHandler = () => {
+        authCtx.login(submittedData.idToken, submittedData.expirationTime.toString());
     }
 
     const onRequestErrorHandler = (errorMessage) => {
@@ -43,7 +46,7 @@ const RegisterUser = (props) => {
                 {errorMessage}
             </ErrorModal>}
             {showSuccessModal && <SuccessModal
-                onNext={onCloseModalHandler}
+                onNext={onNextSuccessModalHandler}
                 header={"Erfolgreich"}>
                 {successMessage}
             </SuccessModal>}

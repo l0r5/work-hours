@@ -109,8 +109,6 @@ const AuthForm = (props) => {
                 }
             })
             .then(data => {
-                console.log('data');
-                console.log(data);
                 if (data && data.expiresIn) {
                     const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
                     props.onSubmitted({...data, expirationTime});
