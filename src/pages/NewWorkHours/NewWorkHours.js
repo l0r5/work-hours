@@ -1,5 +1,5 @@
 import classes from './NewWorkHours.module.css';
-import WorkHoursForm from '../../components/WorkHoursForm/WorkHoursForm';
+import WorkHoursForm from '../../components/Forms/WorkHoursForm/WorkHoursForm';
 import {useHistory} from 'react-router-dom';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import {useState} from 'react';
@@ -40,6 +40,7 @@ const NewWorkHours = () => {
 
     return (
         <div className={classes.NewWorkHours}>
+            <h2>Neue Arbeitsstunden erfassen</h2>
             <WorkHoursForm
                 type={'new'}
                 onSubmit={onSubmitAddNewHandler}

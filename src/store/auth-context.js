@@ -1,42 +1,90 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+
+let logoutTimer;
 
 const AuthContext = React.createContext({
+    token: '',
     isLoggedIn: false,
-    onLogin: (email, password) => {
+    login: (token) => {
     },
-    onLogout: () => {
+    logout: () => {
     },
 });
 
+const calculateRemainingTime = (expirationTime) => {
+    const currentTime = new Date().getTime();
+    const adjExpirationTime = new Date(expirationTime).getTime();
+    return adjExpirationTime - currentTime;
+};
+
+const retrieveStoredToken = () => {
+    const storedToken = localStorage.getItem('auth-token');
+    const storedExpirationTime = localStorage.getItem('auth-expiration-time');
+
+    const remainingTime = calculateRemainingTime(storedExpirationTime);
+
+    if (remainingTime <= 60000) {
+        localStorage.removeItem('auth-token');
+        localStorage.removeItem('auth-expiration-time');
+        return null;
+    }
+
+    return {
+        token: storedToken,
+        duration: remainingTime
+    };
+};
+
 export const AuthContextProvider = (props) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const tokenData = retrieveStoredToken();
+    let initialToken;
+    if (tokenData) {
+        initialToken = tokenData.token;
+    }
 
-    useEffect(() => {
-        const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+    const [token, setToken] = useState(initialToken)
 
-        if (storedUserLoggedInInformation === '1') {
-            setIsLoggedIn(true);
+    let userIsLoggedIn = !!token;
+
+    const logoutHandler = useCallback(() => {
+        setToken(null);
+        localStorage.removeItem('auth-token');
+        localStorage.removeItem('auth-expiration-time');
+
+        if (logoutTimer) {
+            clearTimeout(logoutTimer);
         }
     }, []);
 
-    const loginHandler = () => {
-        // check email and password
-        localStorage.setItem('isLoggedIn', '1');
-        setIsLoggedIn(true);
+    const loginHandler = (token, expirationTime) => {
+        console.log('auth-token: ');
+        console.log(token);
+        setToken(token);
+        localStorage.setItem('auth-token', token);
+        localStorage.setItem('auth-expiration-time', expirationTime);
+
+        const remainingTime = calculateRemainingTime(expirationTime);
+        logoutTimer = setTimeout(logoutHandler, remainingTime);
     };
 
-    const logoutHandler = () => {
-        localStorage.removeItem('isLoggedIn');
-        setIsLoggedIn(false);
-    };
+    useEffect(() => {
+        if (tokenData) {
+            console.log(tokenData.duration);
+            logoutTimer = setTimeout(logoutHandler, tokenData.duration);
+        }
+    }, [tokenData, logoutHandler]);
 
-    return (<AuthContext.Provider value={{
-        isLoggedIn: isLoggedIn,
-        onLogin: loginHandler,
-        onLogout: logoutHandler
-    }}>
-        {props.children}
-    </AuthContext.Provider>);
+    const contextValue = {
+        token: token,
+        isLoggedIn: userIsLoggedIn,
+        login: loginHandler,
+        logout: logoutHandler
+    }
+
+    return (
+        <AuthContext.Provider value={contextValue}>
+            {props.children}
+        </AuthContext.Provider>);
 };
 
 export default AuthContext;

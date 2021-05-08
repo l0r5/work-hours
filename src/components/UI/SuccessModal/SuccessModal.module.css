@@ -1,0 +1,26 @@
+.Header {
+    height: 75px;
+    background-color: #2aaf6e;
+    margin: -1rem;
+    border-radius: 14px 14px 0 0;
+    padding: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.Header svg {
+    font-size: 4em;
+    color: white;
+    cursor: default;
+}
+
+.Body {
+    margin: 32px 0 32px 0;
+}
+
+.ContinueButton {
+    display: flex;
+    justify-content: center;
+}

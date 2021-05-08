@@ -1,5 +1,5 @@
 import classes from './EditWorkHours.module.css';
-import WorkHoursForm from '../../components/WorkHoursForm/WorkHoursForm';
+import WorkHoursForm from '../../components/Forms/WorkHoursForm/WorkHoursForm';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useState} from 'react';
 import Spinner from '../../components/UI/Spinner/Spinner';

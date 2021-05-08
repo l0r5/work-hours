@@ -8,7 +8,7 @@ import Backdrop from '../Backdrop/Backdrop';
 const ModalOverlay = (props) => {
     return (
         <div className={classes.Modal}>
-            <div className={classes.Content}>{props.children}</div>
+            <div>{props.children}</div>
         </div>
     );
 };

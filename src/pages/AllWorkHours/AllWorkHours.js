@@ -19,6 +19,7 @@ const AllWorkHours = () => {
         fetchWorkHours().catch(error => {
             setIsLoading(false);
             setHttpError(error.message)
+            throw error;
         });
     }, []);
 
