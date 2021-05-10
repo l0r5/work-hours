@@ -1,43 +1,15 @@
 import React from 'react';
+
+import classes from './EnhancedTable.module.css';
 import {makeStyles} from '@material-ui/core/styles';
+import {Paper, TableCell} from '@material-ui/core';
+import TableToolbar from '../../Tables/WorkHoursTable/TableToolbar/TableToolbar';
+import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import TableToolbar from './TableToolbar/TableToolbar';
+import TablePagination from '@material-ui/core/TablePagination';
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
-
-import classes from './WorkHoursTable.module.css';
-import EnhancedTableRow from './EnhancedTableRow/EnhancedTableRow';
-
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -46,17 +18,17 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const WorkHoursTable = (props) => {
+const EnhancedTable = (props) => {
     const materialClasses = useStyles();
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('data');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    let rows = null;
-    if (props.items) {
-        rows = [...props.items];
+    let rows = [];
+    if (props.rows) {
+        rows = [...props.rows];
     }
 
     const onSortRequestHandler = (event, property) => {
@@ -90,7 +62,6 @@ const WorkHoursTable = (props) => {
                 selected.slice(selectedIndex + 1),
             );
         }
-
         setSelected(newSelected);
     };
 
@@ -103,9 +74,36 @@ const WorkHoursTable = (props) => {
         setPage(0);
     };
 
+    const descendingComparator = (a, b, orderBy) => {
+        if (b[orderBy] < a[orderBy]) {
+            return -1;
+        }
+        if (b[orderBy] > a[orderBy]) {
+            return 1;
+        }
+        return 0;
+    };
+
+    const getComparator = (order, orderBy) => {
+        return order === 'desc'
+            ? (a, b) => descendingComparator(a, b, orderBy)
+            : (a, b) => -descendingComparator(a, b, orderBy);
+    };
+
+    const stableSort = (array, comparator) => {
+        const stabilizedThis = array.map((el, index) => [el, index]);
+        stabilizedThis.sort((a, b) => {
+            const order = comparator(a[0], b[0]);
+            if (order !== 0) return order;
+            return a[1] - b[1];
+        });
+        return stabilizedThis.map((el) => el[0]);
+    }
+
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows ? rows.length : 0 - page * rowsPerPage);
+
 
     return (
         <div className={classes.Root}>
@@ -119,6 +117,8 @@ const WorkHoursTable = (props) => {
                         aria-label="Arbeitsstunden Tabelle"
                     >
                         <EnhancedTableHead
+                            hasCheckbox={true}
+                            headCells={props.headCells}
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
@@ -130,18 +130,15 @@ const WorkHoursTable = (props) => {
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
                                     return (
-                                        <EnhancedTableRow
-                                            key={row.id}
-                                            click={onCheckBoxClickHandler}
-                                            item={row}
-                                            isSelected={isItemSelected}
-                                            labelId={labelId}
-                                            onEditClick={props.onEditItemClick}
-                                            onDetailViewClick={props.onDetailViewClick}
-                                        />
+                                        props.createSpecificRow({
+                                            id: row.id,
+                                            onCheckBoxClick: onCheckBoxClickHandler,
+                                            row,
+                                            isSelected: isSelected(row.id),
+                                            labelId: labelId,
+                                        })
                                     );
                                 })}
                             {emptyRows > 0 && (
@@ -164,6 +161,7 @@ const WorkHoursTable = (props) => {
             </Paper>
         </div>
     );
-}
 
-export default WorkHoursTable;
+};
+
+export default EnhancedTable;
