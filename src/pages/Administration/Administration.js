@@ -4,6 +4,7 @@ import AuthForm from '../../components/Forms/AuthForm/AuthForm';
 import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
 import AuthContext from '../../store/auth-context';
+import UsersTable from '../../components/Tables/UsersTable/UsersTable';
 
 
 const Administration = (props) => {
@@ -53,6 +54,7 @@ const Administration = (props) => {
             <h2>Neuen Benutzer anlegen</h2>
             <AuthForm isLoginMode={false} onSubmitted={onSubmittedFormHandler}
                       onRequestError={onRequestErrorHandler}/>
+            <UsersTable/>
         </Fragment>);
 };
 
