@@ -4,7 +4,7 @@ import {Link, useHistory} from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import classes from './AllWorkHours.module.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import WorkHoursTable from '../../components/Tables/WorkHoursTable/WorkHoursTable';
+import WorkHoursTable from '../../components/WorkHoursTable/WorkHoursTable';
 import WorkHoursDetailView from '../../components/WorkHoursDetailView/WorkHoursDetailView';
 
 const AllWorkHours = () => {

@@ -6,7 +6,22 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import classes from './EnhancedTableHead.css';
+import classes from './EnhancedTableHead.module.css';
+
+const headCells = [
+    {id: 'view', numeric: false, label: ''},
+    {id: 'edit', numeric: false, label: ''},
+    {id: 'id', numeric: false, label: 'ID'},
+    {id: 'date', numeric: false, label: 'Date'},
+    {id: 'customer', numeric: false, label: 'Customer'},
+    {id: 'location', numeric: false, label: 'Location'},
+    {id: 'token', numeric: false, label: 'Token'},
+    {id: 'comment', numeric: false, label: 'Comment'},
+    {id: 'employee', numeric: false, label: 'Employee'},
+    {id: 'workHours', numeric: true, label: 'Work Hours'},
+    {id: 'chainsawHours', numeric: true, label: 'Chainsaw Hours'},
+    {id: 'machineHours', numeric: true, label: 'Machine Hours'},
+];
 
 const EnhancedTableHead = (props) => {
     const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props;
@@ -16,15 +31,15 @@ const EnhancedTableHead = (props) => {
     return (
         <TableHead className={classes.EnhancedTableHeader}>
             <TableRow>
-                {props.hasCheckbox && <TableCell padding="checkbox">
+                <TableCell padding="checkbox">
                     <Checkbox
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
                         inputProps={{'aria-label': 'select all entries'}}
                     />
-                </TableCell>}
-                {props.headCells.map((headCell) => (
+                </TableCell>
+                {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
