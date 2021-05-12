@@ -3,9 +3,9 @@ import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react';
 import {Edit, OpenInNew} from '@material-ui/icons';
-import Icon from '../../UI/Icon/Icon';
+import Icon from '../../../UI/Icon/Icon';
 
-const EnhancedTableRow = (props) => {
+const WorkHoursTableRow = (props) => {
 
     return (
         <TableRow
@@ -52,4 +52,4 @@ const EnhancedTableRow = (props) => {
     );
 };
 
-export default EnhancedTableRow;
+export default WorkHoursTableRow;

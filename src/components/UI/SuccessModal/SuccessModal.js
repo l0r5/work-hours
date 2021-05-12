@@ -16,7 +16,7 @@ const SuccessModal = (props) => {
                 <p>{props.children}</p>
             </div>
             <div className={classes.ContinueButton}>
-                <Button onClick={props.onNext}>Weiter</Button>
+                <Button onClick={props.onContinue}>Weiter</Button>
             </div>
         </Modal>
     );

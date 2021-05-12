@@ -10,6 +10,16 @@
     padding: 32px 16px;
     box-sizing: border-box;
     transition: transform 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.SideDrawer ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 @media (min-width: 769px) {
