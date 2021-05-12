@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 
 import AuthForm from '../../components/Forms/AuthForm/AuthForm';
 import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
@@ -15,50 +15,7 @@ const Administration = (props) => {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
-    const [users, setUsers] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-
     const [submittedData, setSubmittedData] = useState();
-
-    useEffect(() => {
-        fetchUsers().catch(error => {
-            setIsLoading(false);
-            // setHttpError(error.message)
-            throw error;
-        });
-    }, []);
-
-    const fetchUsers = async () => {
-        setIsLoading(true);
-        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                idToken: authCtx.token
-            })
-        });
-
-        if (!response.ok) {
-            // TODO error handling
-            console.log(response)
-            throw new Error('Something went wrong!');
-        }
-
-        const responseData = await response.json();
-        console.log(responseData)
-
-        const loadedUsers = responseData.users.map(user => ({
-            id: user.localId,
-            email: user.email,
-        }));
-        console.log(loadedUsers)
-        setUsers(loadedUsers);
-        setIsLoading(false);
-        console.log("Fetched Users from Database.")
-    };
 
     const onSubmittedFormHandler = (data) => {
         setSubmittedData(data);
@@ -66,9 +23,8 @@ const Administration = (props) => {
         setShowSuccessModal(true);
     };
 
-    const onContinueSuccessModalHandler = () => {
-        // authCtx.login(submittedData.idToken, submittedData.expirationTime.toString());
-        setShowSuccessModal(false)
+    const onNextSuccessModalHandler = () => {
+        authCtx.login(submittedData.idToken, submittedData.expirationTime.toString());
     }
 
     const onRequestErrorHandler = (errorMessage) => {
@@ -81,30 +37,6 @@ const Administration = (props) => {
         setShowErrorModal(false)
         setErrorMessage('')
     }
-    const onEditUserHandler = (item) => {
-        console.log("Clicked edit item: ", item.id)
-        // history.push({
-        //     pathname: `/bearbeiten/${item.id}`,
-        //     state: {
-        //         id: item.id,
-        //         date: item.date,
-        //         customer: item.customer,
-        //         location: item.location,
-        //         token: item.token,
-        //         task: item.task,
-        //         comment: item.comment,
-        //         employee: item.employee,
-        //         workHours: item.workHours,
-        //         chainsawHours: item.chainsawHours,
-        //         machineHours: item.machineHours
-        //     }
-        // });
-    };
-
-    const onDeleteUserHandler = (item) => {
-        console.log("Clicked delete item: ", item.id)
-
-    };
 
     return (
         <Fragment>
@@ -115,17 +47,14 @@ const Administration = (props) => {
                 {errorMessage}
             </ErrorModal>}
             {showSuccessModal && <SuccessModal
-                onContinue={onContinueSuccessModalHandler}
+                onNext={onNextSuccessModalHandler}
                 header={"Erfolgreich"}>
                 {successMessage}
             </SuccessModal>}
             <h2>Neuen Benutzer anlegen</h2>
             <AuthForm isLoginMode={false} onSubmitted={onSubmittedFormHandler}
                       onRequestError={onRequestErrorHandler}/>
-            <UsersTable
-                items={users}
-                onEditClick={onEditUserHandler}
-                onDeleteClick={onDeleteUserHandler}/>
+            <UsersTable/>
         </Fragment>);
 };
 

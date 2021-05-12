@@ -75,7 +75,7 @@ const AllWorkHours = () => {
     };
 
     const onEditItemHandler = (item) => {
-        console.log("Clicked item: ", item.id)
+        console.log("Clicked")
         history.push({
             pathname: `/bearbeiten/${item.id}`,
             state: {
@@ -117,8 +117,7 @@ const AllWorkHours = () => {
                                  onBackClick={hideDetailViewHandler}/>}
             <WorkHoursTable items={workHours} deleteRequestHandler={deleteItemRequestHandler}
                             onEditItemClick={onEditItemHandler}
-                            onDetailViewClick={showDetailViewHandler}
-            />
+                            onDetailViewClick={showDetailViewHandler}/>
         </div>
     );
 };
