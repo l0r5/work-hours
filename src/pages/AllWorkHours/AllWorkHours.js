@@ -4,7 +4,7 @@ import {Link, useHistory} from 'react-router-dom';
 import Button from '../../components/UI/Button/Button';
 import classes from './AllWorkHours.module.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import WorkHoursTable from '../../components/Tables/WorkHoursTable/WorkHoursTable';
+import WorkHoursTable from '../../components/WorkHoursTable/WorkHoursTable';
 import WorkHoursDetailView from '../../components/WorkHoursDetailView/WorkHoursDetailView';
 
 const AllWorkHours = () => {
@@ -75,7 +75,7 @@ const AllWorkHours = () => {
     };
 
     const onEditItemHandler = (item) => {
-        console.log("Clicked item: ", item.id)
+        console.log("Clicked")
         history.push({
             pathname: `/bearbeiten/${item.id}`,
             state: {
@@ -117,8 +117,7 @@ const AllWorkHours = () => {
                                  onBackClick={hideDetailViewHandler}/>}
             <WorkHoursTable items={workHours} deleteRequestHandler={deleteItemRequestHandler}
                             onEditItemClick={onEditItemHandler}
-                            onDetailViewClick={showDetailViewHandler}
-            />
+                            onDetailViewClick={showDetailViewHandler}/>
         </div>
     );
 };
