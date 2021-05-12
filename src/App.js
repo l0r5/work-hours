@@ -6,7 +6,7 @@ import AllWorkHours from './pages/AllWorkHours/AllWorkHours';
 import NewWorkHours from './pages/NewWorkHours/NewWorkHours';
 import NotFound from './pages/NotFound/NotFound';
 import EditWorkHours from './pages/EditWorkHours/EditWorkHours';
-import Administration from './pages/RegisterUser/Administration';
+import RegisterUser from './pages/RegisterUser/RegisterUser';
 import UserProfile from './pages/UserProfile/UserProfile';
 import AuthContext from './store/auth-context';
 import Login from './pages/Login/Login';
@@ -42,8 +42,8 @@ function App() {
             <Route path='/bearbeiten/:id' exact>
                 <EditWorkHours/>
             </Route>
-            <Route path='/administration' exact>
-                <Administration/>
+            <Route path='/registrieren' exact>
+                <RegisterUser/>
             </Route>
             <Route path='/profil' exact>
                 <UserProfile/>

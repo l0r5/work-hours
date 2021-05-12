@@ -6,7 +6,7 @@ import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
 import AuthContext from '../../store/auth-context';
 
 
-const Administration = (props) => {
+const RegisterUser = (props) => {
     const authCtx = useContext(AuthContext);
 
     const [showErrorModal, setShowErrorModal] = useState(false);
@@ -56,4 +56,4 @@ const Administration = (props) => {
         </Fragment>);
 };
 
-export default Administration;
+export default RegisterUser;
