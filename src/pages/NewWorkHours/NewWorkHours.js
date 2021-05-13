@@ -3,6 +3,7 @@ import WorkHoursForm from '../../components/Forms/WorkHoursForm/WorkHoursForm';
 import {useHistory} from 'react-router-dom';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import {useState} from 'react';
+import {FIREBASE_COLLECTION_BASE_URL} from '../../consts/consts';
 
 const NewWorkHours = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -10,7 +11,7 @@ const NewWorkHours = () => {
 
     const onSubmitAddNewHandler = (element) => {
         setIsLoading(true);
-        fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json', {
+        fetch(FIREBASE_COLLECTION_BASE_URL + '/workhours.json', {
             method: 'POST',
             body: JSON.stringify({
                 date: element.date,

@@ -3,6 +3,11 @@ import {useEffect, useReducer, useState} from 'react';
 import classes from './AuthForm.module.css';
 import Spinner from '../../UI/Spinner/Spinner';
 import Button from '../../UI/Button/Button';
+import {
+    FIREBASE_AUTH_BASE_URL,
+    FIREBASE_COLLECTION_BASE_URL,
+    ROLE_USER
+} from '../../../consts/consts';
 
 const emailReducer = (state, action) => {
     if (action.type === 'USER_INPUT') {
@@ -78,9 +83,9 @@ const AuthForm = (props) => {
         setIsLoading(true);
         let url;
         if (props.isLoginMode) {
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
+            url = FIREBASE_AUTH_BASE_URL + 'accounts:signInWithPassword?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
         } else {
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
+            url = FIREBASE_AUTH_BASE_URL + 'accounts:signUp?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
         }
 
         fetch(url, {
@@ -97,6 +102,18 @@ const AuthForm = (props) => {
             .then(res => {
                 setIsLoading(false);
                 if (res.ok) {
+                    if (!props.isLoginMode) {
+                        fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                email: emailState.value,
+                                role: ROLE_USER,
+                            })
+                        }).then(() => {
+                                console.log("Added new element with email " + emailState.value);
+                            }
+                        );
+                    }
                     return res.json();
                 } else {
                     res.json().then(data => {

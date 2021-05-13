@@ -25,7 +25,7 @@ const Login = (props) => {
     }
 
     const onSubmittedFormHandler = (data) => {
-        authCtx.login(data.idToken, data.expirationTime.toString());
+        authCtx.login(data.email, data.idToken, data.expirationTime.toString());
     }
 
     return (

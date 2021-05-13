@@ -6,6 +6,7 @@ import classes from './AllWorkHours.module.css';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import WorkHoursTable from '../../components/Tables/WorkHoursTable/WorkHoursTable';
 import WorkHoursDetailView from '../../components/WorkHoursDetailView/WorkHoursDetailView';
+import {FIREBASE_COLLECTION_BASE_URL} from '../../consts/consts';
 
 const AllWorkHours = () => {
     const history = useHistory();
@@ -25,8 +26,9 @@ const AllWorkHours = () => {
 
     const fetchWorkHours = async () => {
         setIsLoading(true);
-        const response = await fetch('https://workhours-e2280-default-rtdb.firebaseio.com/workhours.json');
+        const response = await fetch(FIREBASE_COLLECTION_BASE_URL + 'workhours.json');
         if (!response.ok) {
+            // TODO Error handling
             throw new Error('Something went wrong!');
         }
 

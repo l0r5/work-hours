@@ -5,6 +5,7 @@ import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
 import AuthContext from '../../store/auth-context';
 import UsersTable from '../../components/Tables/UsersTable/UsersTable';
+import {FIREBASE_AUTH_BASE_URL} from '../../consts/consts';
 
 
 const Administration = (props) => {
@@ -31,7 +32,7 @@ const Administration = (props) => {
 
     const fetchUsers = async () => {
         setIsLoading(true);
-        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY, {
+        const response = await fetch(FIREBASE_AUTH_BASE_URL + 'accounts:lookup?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +68,6 @@ const Administration = (props) => {
     };
 
     const onContinueSuccessModalHandler = () => {
-        // authCtx.login(submittedData.idToken, submittedData.expirationTime.toString());
         setShowSuccessModal(false)
     }
 
