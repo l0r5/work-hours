@@ -22,7 +22,7 @@ const SideDrawer = (props) => {
                     <Logo/>
                 </div>
                 <nav>
-                    <NavigationItems/>
+                    <NavigationItems isAdmin={props.isAdmin}/>
                 </nav>
             </div>
         </Fragment>

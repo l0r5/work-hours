@@ -24,9 +24,10 @@ const Login = (props) => {
         setShowErrorModal(true)
     }
 
-    const onSubmittedFormHandler = (data) => {
-        authCtx.login(data.email, data.idToken, data.expirationTime.toString());
+    const onSubmittedFormHandler = async (data) => {
+        authCtx.login(data.role, data.idToken, data.expirationTime.toString());
     }
+
 
     return (
         <Fragment>

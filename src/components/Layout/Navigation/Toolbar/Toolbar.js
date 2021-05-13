@@ -4,12 +4,11 @@ import Logo from '../Logo/Logo';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 
 const Toolbar = (props) => {
-
     return (
         <header className={classes.Toolbar}>
             <DrawerToggle clicked={props.drawerToggleClicked}/>
             <nav className={classes.DesktopOnly}>
-                <NavigationItems />
+                <NavigationItems isAdmin={props.isAdmin}/>
             </nav>
             <div className={classes.Logo}>
                 <Logo/>

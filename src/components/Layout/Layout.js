@@ -6,6 +6,7 @@ import SideDrawer from './Navigation/SideDrawer/SideDrawer';
 import Modal from '../UI/Modal/Modal';
 import AuthContext from '../../store/auth-context';
 import Button from '../UI/Button/Button';
+import {ROLE_ADMIN} from '../../consts/consts';
 
 const Layout = (props) => {
     const authCtx = useContext(AuthContext);
@@ -30,6 +31,10 @@ const Layout = (props) => {
         setShowLogoutModal(!showLogoutModal);
     }
 
+    console.log('isAdmin' + authCtx.role);
+    console.log('isAdmin' + (authCtx.role === ROLE_ADMIN));
+
+
     return (props.isLoggedIn ?
             <Fragment>
                 {showLogoutModal &&
@@ -40,10 +45,14 @@ const Layout = (props) => {
                 </Modal>}
                 <Toolbar
                     drawerToggleClicked={sideDrawerToggleHandler}
-                    onLogout={toggleModalHandler}/>
+                    onLogout={toggleModalHandler}
+                    isAdmin={(authCtx.role === ROLE_ADMIN)}
+                />
                 <SideDrawer
                     open={showSideDrawer}
-                    closed={sideDrawerCloseHandler}/>
+                    closed={sideDrawerCloseHandler}
+                    isAdmin={(authCtx.role === ROLE_ADMIN)}
+                />
                 <main className={classes.main}>{props.children}</main>
             </Fragment>
             :
