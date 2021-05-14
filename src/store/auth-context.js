@@ -5,6 +5,7 @@ let logoutTimer;
 const AuthContext = React.createContext({
     token: '',
     isLoggedIn: false,
+    id: '',
     role: '',
     login: (email, token) => {
     },
@@ -37,8 +38,6 @@ const retrieveStoredToken = () => {
 };
 
 
-
-
 export const AuthContextProvider = (props) => {
     const tokenData = retrieveStoredToken();
     let initialToken;
@@ -46,15 +45,13 @@ export const AuthContextProvider = (props) => {
         initialToken = tokenData.token;
     }
 
-    console.log('AuthContextProvider: ');
-    console.log(props);
-
-
     const [token, setToken] = useState(initialToken);
-    const [role, setRole] = useState(null);
+    const [id, setId] = useState();
+    const [role, setRole] = useState();
     let userIsLoggedIn = !!token;
 
     const logoutHandler = useCallback(() => {
+        setId(null)
         setToken(null);
         setRole(null);
         localStorage.removeItem('auth-token');
@@ -65,25 +62,29 @@ export const AuthContextProvider = (props) => {
         }
     }, []);
 
-    const loginHandler = (role, token, expirationTime) => {
-        console.log('auth-token: ');
-        console.log(token);
+    const loginHandler = (id, role, token, expirationTime) => {
+        setId(id)
+        setRole(role);
         setToken(token);
         localStorage.setItem('auth-token', token);
         localStorage.setItem('auth-expiration-time', expirationTime);
-        setRole(role);
         const remainingTime = calculateRemainingTime(expirationTime);
         logoutTimer = setTimeout(logoutHandler, remainingTime);
+        console.log('Successfully logged in! \n' +
+            'id: ' + id + '\n' +
+            'role: ' + role + '\n' +
+            'token: ' + token + '\n' +
+            'expirationTime: ' + remainingTime);
     };
 
     useEffect(() => {
         if (tokenData) {
-            console.log(tokenData.duration);
             logoutTimer = setTimeout(logoutHandler, tokenData.duration);
         }
     }, [tokenData, logoutHandler]);
 
     const contextValue = {
+        id: id,
         token: token,
         isLoggedIn: userIsLoggedIn,
         role: role,

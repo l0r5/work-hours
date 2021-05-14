@@ -31,10 +31,6 @@ const Layout = (props) => {
         setShowLogoutModal(!showLogoutModal);
     }
 
-    console.log('isAdmin' + authCtx.role);
-    console.log('isAdmin' + (authCtx.role === ROLE_ADMIN));
-
-
     return (props.isLoggedIn ?
             <Fragment>
                 {showLogoutModal &&

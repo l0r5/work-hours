@@ -25,7 +25,7 @@ const Login = (props) => {
     }
 
     const onSubmittedFormHandler = async (data) => {
-        authCtx.login(data.role, data.idToken, data.expirationTime.toString());
+        authCtx.login(data.localId, data.role, data.idToken, data.expirationTime.toString());
     }
 
 

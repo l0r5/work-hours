@@ -28,7 +28,7 @@ const UsersTableRow = (props) => {
             <TableCell component="th" id={props.labelId} align="left"
                        scope="row">{props.item.id}</TableCell>
             <TableCell align="left">{props.item.email}</TableCell>
-            {/*<TableCell align="left">{props.item.role}</TableCell>*/}
+            <TableCell align="left">{props.item.role}</TableCell>
 
         </TableRow>
     );

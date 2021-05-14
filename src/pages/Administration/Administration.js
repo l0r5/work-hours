@@ -5,7 +5,7 @@ import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
 import AuthContext from '../../store/auth-context';
 import UsersTable from '../../components/Tables/UsersTable/UsersTable';
-import {FIREBASE_AUTH_BASE_URL} from '../../consts/consts';
+import {FIREBASE_COLLECTION_BASE_URL} from '../../consts/consts';
 
 
 const Administration = (props) => {
@@ -32,15 +32,8 @@ const Administration = (props) => {
 
     const fetchUsers = async () => {
         setIsLoading(true);
-        const response = await fetch(FIREBASE_AUTH_BASE_URL + 'accounts:lookup?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                idToken: authCtx.token
-            })
-        });
+
+        const response = await fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json');
 
         if (!response.ok) {
             // TODO error handling
@@ -49,12 +42,18 @@ const Administration = (props) => {
         }
 
         const responseData = await response.json();
+        console.log('Fetched userdata')
         console.log(responseData)
 
-        const loadedUsers = responseData.users.map(user => ({
-            id: user.localId,
-            email: user.email,
-        }));
+        let loadedUsers = [];
+
+        for (const key in responseData) {
+            loadedUsers.push({
+                id: responseData[key].id,
+                email: responseData[key].email,
+                role: responseData[key].role,
+            })
+        }
         console.log(loadedUsers)
         setUsers(loadedUsers);
         setIsLoading(false);

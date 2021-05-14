@@ -6,6 +6,7 @@ import Button from '../../UI/Button/Button';
 import {
     FIREBASE_AUTH_BASE_URL,
     FIREBASE_COLLECTION_BASE_URL,
+    ID_UNCONFIRMED,
     ROLE_USER
 } from '../../../consts/consts';
 
@@ -50,7 +51,6 @@ const AuthForm = (props) => {
 
         useEffect(() => {
             const identifier = setTimeout(() => {
-                console.log('Checking form validity');
                 setFormIsValid(
                     emailIsValid && passwordIsValid
                 );
@@ -69,37 +69,58 @@ const AuthForm = (props) => {
             dispatchPassword({type: 'USER_INPUT', val: event.target.value});
         };
 
-        const validateEmailHandler = () => {
-            dispatchEmail({type: 'INPUT_BLUR'});
-        };
+    const validateEmailHandler = () => {
+        dispatchEmail({type: 'INPUT_BLUR'});
+    };
 
-        const validatePasswordHandler = () => {
-            dispatchPassword({type: 'INPUT_BLUR'});
-        };
+    const validatePasswordHandler = () => {
+        dispatchPassword({type: 'INPUT_BLUR'});
+    };
 
-        const fetchUserRole = async () => {
-            let role;
-            const response = await fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json')
-            if (!response.ok) {
-                // TODO Error handling
-                throw new Error('Something went wrong!');
-            }
+    const fetchUserData = async (localId) => {
+        let user;
+        const response = await fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json')
+        if (!response.ok) {
+            // TODO Error handling
+            throw new Error('Something went wrong!');
+        }
 
-            const responseData = await response.json();
-            console.log('Fetched Users from Database.')
+        const responseData = await response.json();
+        console.log('Fetched Users from Database.')
 
-            for (const key in responseData) {
-                if (responseData[key].email === emailState.value) {
-                    role = responseData[key].role;
+        if (responseData == null) {
+            return;
+        }
+
+        for (const key in responseData) {
+            if (responseData[key].email === emailState.value) {
+                user = responseData[key];
+
+                if (user.id === ID_UNCONFIRMED) {
+                    // TODO update id
+
+                    fetch(FIREBASE_COLLECTION_BASE_URL + '/users/' + key + '.json', {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            ...user,
+                            id: localId
+                        })
+                    }).then(() => {
+                            console.log('Set user id after inital login:\n' +
+                                'id: ' + localId + '\n' +
+                                'email: ' + user.email);
+                        }
+                    );
 
                 }
             }
 
-            console.log(responseData)
-            console.log(emailState.value)
-            console.log('User ' + emailState.value + ' has role: ' + role)
-            return role;
+
         }
+
+        console.log('User ' + emailState.value + ' has user: ' + user)
+        return user;
+    }
 
         const submitHandler = event => {
                 event.preventDefault();
@@ -130,6 +151,7 @@ const AuthForm = (props) => {
                                 fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json', {
                                     method: 'POST',
                                     body: JSON.stringify({
+                                        id: ID_UNCONFIRMED,
                                         email: emailState.value,
                                         role: ROLE_USER,
                                     })
@@ -154,10 +176,12 @@ const AuthForm = (props) => {
                             const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
 
                             if (data && data.email) {
-                                fetchUserRole().then(role => {
-                                    data = {...data, role};
-                                    console.log(role)
-                                    props.onSubmitted({...data, expirationTime, role});
+                                fetchUserData(data.localId).then(user => {
+                                    if (user) {
+                                        console.log(user)
+                                        data = {...data, role: user.role};
+                                    }
+                                    props.onSubmitted({...data, expirationTime});
                                 });
                             } else {
                                 props.onSubmitted({...data, expirationTime});
