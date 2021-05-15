@@ -3,3 +3,6 @@ export const FIREBASE_COLLECTION_BASE_URL = 'https://workhours-e2280-default-rtd
 export const ROLE_USER = 'user';
 export const ROLE_ADMIN = 'admin';
 export const ID_UNCONFIRMED = 'unconfirmed';
+export const REST_GET = 'GET';
+export const REST_POST = 'POST';
+export const REST_PUT = 'PUT';

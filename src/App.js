@@ -10,6 +10,7 @@ import Administration from './pages/Administration/Administration';
 import UserProfile from './pages/UserProfile/UserProfile';
 import AuthContext from './store/auth-context';
 import Login from './pages/Login/Login';
+import {ROLE_ADMIN} from './consts/consts';
 
 function App() {
 
@@ -45,9 +46,11 @@ function App() {
             <Route path='/profil' exact>
                 <UserProfile/>
             </Route>
+            {authCtx.role === ROLE_ADMIN &&
             <Route path='/administration' exact>
                 <Administration/>
             </Route>
+            }
             <Route path='/login' exact>
                 <Redirect to='/'/>
             </Route>
@@ -56,7 +59,6 @@ function App() {
             </Route>
         </Switch>
     );
-
 
 
     return (

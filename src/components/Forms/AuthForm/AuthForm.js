@@ -4,11 +4,14 @@ import classes from './AuthForm.module.css';
 import Spinner from '../../UI/Spinner/Spinner';
 import Button from '../../UI/Button/Button';
 import {
-    FIREBASE_AUTH_BASE_URL,
     FIREBASE_COLLECTION_BASE_URL,
     ID_UNCONFIRMED,
+    REST_POST,
+    REST_PUT,
     ROLE_USER
 } from '../../../consts/consts';
+import useDbCall from '../../../hooks/use-db-call';
+import useAuthCall from '../../../hooks/use-auth-call';
 
 const emailReducer = (state, action) => {
     if (action.type === 'USER_INPUT') {
@@ -32,17 +35,18 @@ const passwordReducer = (state, action) => {
 
 const AuthForm = (props) => {
 
-        const [isLoading, setIsLoading] = useState(false);
+    const {makeDbRequest} = useDbCall();
+    const {makeAuthRequest} = useAuthCall();
+    const [isLoading, setIsLoading] = useState(false);
+    const [formIsValid, setFormIsValid] = useState(false);
 
-        const [formIsValid, setFormIsValid] = useState(false);
+    const [emailState, dispatchEmail] = useReducer(emailReducer, {
+        value: '',
+        isValid: false
+    });
 
-        const [emailState, dispatchEmail] = useReducer(emailReducer, {
-            value: '',
-            isValid: false
-        });
-
-        const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-            value: '',
+    const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
+        value: '',
             isValid: false
         });
 
@@ -61,13 +65,13 @@ const AuthForm = (props) => {
         }, [emailIsValid, passwordIsValid]);
 
 
-        const emailChangeHandler = (event) => {
-            dispatchEmail({type: 'USER_INPUT', val: event.target.value});
-        };
+    const emailChangeHandler = (event) => {
+        dispatchEmail({type: 'USER_INPUT', val: event.target.value});
+    };
 
-        const passwordChangeHandler = (event) => {
-            dispatchPassword({type: 'USER_INPUT', val: event.target.value});
-        };
+    const passwordChangeHandler = (event) => {
+        dispatchPassword({type: 'USER_INPUT', val: event.target.value});
+    };
 
     const validateEmailHandler = () => {
         dispatchEmail({type: 'INPUT_BLUR'});
@@ -77,125 +81,116 @@ const AuthForm = (props) => {
         dispatchPassword({type: 'INPUT_BLUR'});
     };
 
-    const fetchUserData = async (localId) => {
+    const updateUserId = async (key, user, localId) => {
+        const collectionElem = '/users/' + key + '.json';
+        await makeDbRequest(collectionElem, REST_PUT, {
+            ...user,
+            id: localId
+        });
+        console.log('Set user id after inital login:\n' +
+            'id: ' + localId + '\n' +
+            'email: ' + user.email);
+    }
+
+    const fetchSingleUser = async (localId) => {
         let user;
         const response = await fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json')
         if (!response.ok) {
-            // TODO Error handling
-            throw new Error('Something went wrong!');
+            handleError('Error while fetching single User, response: ' + response);
         }
-
         const responseData = await response.json();
         console.log('Fetched Users from Database.')
 
         if (responseData == null) {
             return;
         }
-
         for (const key in responseData) {
             if (responseData[key].email === emailState.value) {
                 user = responseData[key];
-
                 if (user.id === ID_UNCONFIRMED) {
-                    // TODO update id
-
-                    fetch(FIREBASE_COLLECTION_BASE_URL + '/users/' + key + '.json', {
-                        method: 'PUT',
-                        body: JSON.stringify({
-                            ...user,
-                            id: localId
-                        })
-                    }).then(() => {
-                            console.log('Set user id after inital login:\n' +
-                                'id: ' + localId + '\n' +
-                                'email: ' + user.email);
-                        }
-                    );
-
+                    await updateUserId(key, user, localId);
                 }
             }
-
-
         }
-
-        console.log('User ' + emailState.value + ' has user: ' + user)
+        console.log('User ' + emailState.value + ' has user: ')
+        console.log(user);
         return user;
     }
 
-        const submitHandler = event => {
-                event.preventDefault();
+    const fetchAllUsers = (body) => {
+        makeDbRequest('users.json', REST_POST, body);
+    }
 
-                setIsLoading(true);
-                let url;
-                if (props.isLoginMode) {
-                    url = FIREBASE_AUTH_BASE_URL + 'accounts:signInWithPassword?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
-                } else {
-                    url = FIREBASE_AUTH_BASE_URL + 'accounts:signUp?key=' + process.env.REACT_APP_GOOGLE_FIREBASE_API_KEY;
-                }
+    const makeAuthCall = async (operation, body) => {
+        return await makeAuthRequest(operation, REST_POST, body, {
+            'Content-Type': 'application/json'
+        });
+    };
 
-                fetch(url, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        email: emailState.value,
-                        password: passwordState.value,
-                        returnSecureToken: true
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                })
-                    .then(res => {
-                        setIsLoading(false);
-                        if (res.ok) {
-                            if (!props.isLoginMode) {
-                                fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json', {
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        id: ID_UNCONFIRMED,
-                                        email: emailState.value,
-                                        role: ROLE_USER,
-                                    })
-                                }).then(() => {
-                                        console.log("Added new element with email " + emailState.value);
-                                    }
-                                );
-                            }
-                            return res.json();
-                        } else {
-                            res.json().then(data => {
-                                console.log(data.error)
-                                let errorMessage = 'Authentication Failed!\n' +
-                                    'code: ' + data.error.code + '\n' +
-                                    'message: ' + data.error.message;
-                                props.onRequestError(errorMessage)
-                            });
-                        }
-                    })
-                    .then(data => {
-                        if (data && data.expiresIn) {
-                            const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
-
-                            if (data && data.email) {
-                                fetchUserData(data.localId).then(user => {
-                                    if (user) {
-                                        console.log(user)
-                                        data = {...data, role: user.role};
-                                    }
-                                    props.onSubmitted({...data, expirationTime});
-                                });
-                            } else {
-                                props.onSubmitted({...data, expirationTime});
-                            }
-                        }
-                    })
-                    .catch(err => {
-                        console.log('error');
-
-                        console.log(err)
-                        props.onRequestError(err.toString())
-                    });
+    const onReceivedDataSubmit = (data) => {
+        if (data && data.expiresIn) {
+            const expirationTime = new Date((new Date().getTime() + (+data.expiresIn * 1000)));
+            if (data && data.email) {
+                fetchSingleUser(data.localId).then(user => {
+                    if (user) {
+                        data = {...data, role: user.role};
+                    }
+                    setIsLoading(false);
+                    props.onSubmitted({...data, expirationTime});
+                });
+            } else {
+                setIsLoading(false);
+                props.onSubmitted({...data, expirationTime});
             }
-        ;
+        }
+    }
+
+    const handleError = (errorMessage) => {
+        props.onRequestError(errorMessage)
+    }
+
+    const submitHandler = event => {
+        event.preventDefault();
+        setIsLoading(true);
+
+        let operation;
+        if (props.isLoginMode) {
+            operation = 'accounts:signInWithPassword?key=';
+        } else {
+            operation = 'accounts:signUp?key=';
+        }
+
+        makeAuthCall(operation, {
+            email: emailState.value,
+            password: passwordState.value,
+            returnSecureToken: true
+        }).then(res => {
+            if (res.ok) {
+                if (!props.isLoginMode) {
+                    fetchAllUsers({
+                        id: ID_UNCONFIRMED,
+                        email: emailState.value,
+                        role: ROLE_USER,
+                    });
+                }
+                return res.json();
+            } else {
+                res.json().then(data => {
+                    let errorMessage = 'Authentication Failed!\n' +
+                        'code: ' + data.error.code + '\n' +
+                        'message: ' + data.error.message;
+                    handleError(errorMessage);
+                });
+            }
+        }).then(data => {
+            setIsLoading(false);
+            onReceivedDataSubmit(data);
+        })
+            .catch(err => {
+                setIsLoading(false);
+                handleError(err.toString());
+            });
+    };
 
         return (
             <form onSubmit={submitHandler}>

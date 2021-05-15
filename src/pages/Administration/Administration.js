@@ -5,11 +5,13 @@ import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
 import AuthContext from '../../store/auth-context';
 import UsersTable from '../../components/Tables/UsersTable/UsersTable';
-import {FIREBASE_COLLECTION_BASE_URL} from '../../consts/consts';
+import {REST_GET} from '../../consts/consts';
+import useDbCall from '../../hooks/use-db-call';
 
 
 const Administration = (props) => {
     const authCtx = useContext(AuthContext);
+    const {makeDbRequest} = useDbCall();
 
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
@@ -33,7 +35,7 @@ const Administration = (props) => {
     const fetchUsers = async () => {
         setIsLoading(true);
 
-        const response = await fetch(FIREBASE_COLLECTION_BASE_URL + 'users.json');
+        const response = await makeDbRequest('users.json', REST_GET, null);
 
         if (!response.ok) {
             // TODO error handling
@@ -42,8 +44,6 @@ const Administration = (props) => {
         }
 
         const responseData = await response.json();
-        console.log('Fetched userdata')
-        console.log(responseData)
 
         let loadedUsers = [];
 
