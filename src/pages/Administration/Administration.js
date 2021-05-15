@@ -7,6 +7,7 @@ import AuthContext from '../../store/auth-context';
 import UsersTable from '../../components/Tables/UsersTable/UsersTable';
 import {REST_GET} from '../../consts/consts';
 import useDbCall from '../../hooks/use-db-call';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 
 const Administration = (props) => {
@@ -38,9 +39,8 @@ const Administration = (props) => {
         const response = await makeDbRequest('users.json', REST_GET, null);
 
         if (!response.ok) {
-            // TODO error handling
-            console.log(response)
-            throw new Error('Something went wrong!');
+            onRequestErrorHandler('Failed fetching user data.')
+            console.log('Failed fetching user data.' + response)
         }
 
         const responseData = await response.json();
@@ -121,10 +121,10 @@ const Administration = (props) => {
             <h2>Neuen Benutzer anlegen</h2>
             <AuthForm isLoginMode={false} onSubmitted={onSubmittedFormHandler}
                       onRequestError={onRequestErrorHandler}/>
-            <UsersTable
+            {isLoading ? <Spinner/> : <UsersTable
                 items={users}
                 onEditClick={onEditUserHandler}
-                onDeleteClick={onDeleteUserHandler}/>
+                onDeleteClick={onDeleteUserHandler}/>}
         </Fragment>);
 };
 
