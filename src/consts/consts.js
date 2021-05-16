@@ -6,3 +6,4 @@ export const ID_UNCONFIRMED = 'unconfirmed';
 export const REST_GET = 'GET';
 export const REST_POST = 'POST';
 export const REST_PUT = 'PUT';
+export const REST_DELETE = 'DELETE';

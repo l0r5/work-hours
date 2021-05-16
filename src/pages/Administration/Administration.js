@@ -1,27 +1,30 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 
 import AuthForm from '../../components/Forms/AuthForm/AuthForm';
 import SuccessModal from '../../components/UI/SuccessModal/SuccessModal';
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal';
-import AuthContext from '../../store/auth-context';
 import UsersTable from '../../components/Tables/UsersTable/UsersTable';
 import {REST_GET} from '../../consts/consts';
 import useDbCall from '../../hooks/use-db-call';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import {useHistory} from 'react-router-dom';
+import Modal from '../../components/UI/Modal/Modal';
+import useAuthCall from '../../hooks/use-auth-call';
 
 
 const Administration = (props) => {
-    const authCtx = useContext(AuthContext);
+    const history = useHistory();
     const {makeDbRequest} = useDbCall();
+    const {makeAuthRequest} = useAuthCall();
 
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
+    const [showEditUserModal, setShowEditUserModal] = useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
 
     const [submittedData, setSubmittedData] = useState();
 
@@ -31,7 +34,7 @@ const Administration = (props) => {
             // setHttpError(error.message)
             throw error;
         });
-    }, []);
+    }, [submittedData]);
 
     const fetchUsers = async () => {
         setIsLoading(true);
@@ -52,6 +55,7 @@ const Administration = (props) => {
                 id: responseData[key].id,
                 email: responseData[key].email,
                 role: responseData[key].role,
+                dbKey: key
             })
         }
         console.log(loadedUsers)
@@ -80,30 +84,10 @@ const Administration = (props) => {
         setShowErrorModal(false)
         setErrorMessage('')
     }
-    const onEditUserHandler = (item) => {
-        console.log("Clicked edit item: ", item.id)
-        // history.push({
-        //     pathname: `/bearbeiten/${item.id}`,
-        //     state: {
-        //         id: item.id,
-        //         date: item.date,
-        //         customer: item.customer,
-        //         location: item.location,
-        //         token: item.token,
-        //         task: item.task,
-        //         comment: item.comment,
-        //         employee: item.employee,
-        //         workHours: item.workHours,
-        //         chainsawHours: item.chainsawHours,
-        //         machineHours: item.machineHours
-        //     }
-        // });
-    };
 
-    const onDeleteUserHandler = (item) => {
-        console.log("Clicked delete item: ", item.id)
-
-    };
+    const onCloseEditUserHandler = () => {
+        setShowEditUserModal(false)
+    }
 
     return (
         <Fragment>
@@ -118,13 +102,15 @@ const Administration = (props) => {
                 header={"Erfolgreich"}>
                 {successMessage}
             </SuccessModal>}
+            {showEditUserModal && <Modal
+                onClose={onCloseEditUserHandler}>
+                My Modal
+            </Modal>}
             <h2>Neuen Benutzer anlegen</h2>
             <AuthForm isLoginMode={false} onSubmitted={onSubmittedFormHandler}
                       onRequestError={onRequestErrorHandler}/>
             {isLoading ? <Spinner/> : <UsersTable
-                items={users}
-                onEditClick={onEditUserHandler}
-                onDeleteClick={onDeleteUserHandler}/>}
+                items={users}/>}
         </Fragment>);
 };
 
