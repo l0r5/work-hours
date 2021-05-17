@@ -7,15 +7,11 @@ import UsersTable from '../../components/Tables/UsersTable/UsersTable';
 import {REST_GET} from '../../consts/consts';
 import useDbCall from '../../hooks/use-db-call';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import {useHistory} from 'react-router-dom';
 import Modal from '../../components/UI/Modal/Modal';
-import useAuthCall from '../../hooks/use-auth-call';
 
 
 const Administration = (props) => {
-    const history = useHistory();
     const {makeDbRequest} = useDbCall();
-    const {makeAuthRequest} = useAuthCall();
 
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
